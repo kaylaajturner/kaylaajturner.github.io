@@ -16,8 +16,8 @@
     <!-- Lottie web library -->
     <script src="https://unpkg.com/lottie-web@5.12.2/build/player/lottie.min.js"></script>
     <!-- Lottie animation data (inline JS — works over file:// and GitHub Pages) -->
-    <script src="LottieAnimations/table-animation.js"></script>
-    <script src="LottieAnimations/nav-animation.js"></script>
+    <script src="LottieAnimations/table-animation2.js"></script>
+    <script src="LottieAnimations/nav-animation2.js"></script>
 
     <link rel="stylesheet" href="styles.css" />
   </head>
@@ -67,7 +67,7 @@
             <div class="lottie-wrap">
               <div id="lottie-table"></div>
             </div>
-            <button class="lottie-btn" id="btn-table" aria-label="Pause animation" onclick="toggleAnim('table')">PAUSE</button>
+            <button class="lottie-btn" id="btn-table" aria-label="Compare designs" onclick="toggleAnim('table')">COMPARE</button>
           </div>
         </div>
       </section>
@@ -101,7 +101,7 @@
             <div class="lottie-wrap">
               <div id="lottie-nav"></div>
             </div>
-            <button class="lottie-btn" id="btn-nav" aria-label="Pause animation" onclick="toggleAnim('nav')">PAUSE</button>
+            <button class="lottie-btn" id="btn-nav" aria-label="Compare designs" onclick="toggleAnim('nav')">COMPARE</button>
           </div>
         </div>
       </section>
@@ -126,13 +126,13 @@
   <script>
     var rendererSettings = { preserveAspectRatio: 'xMidYMid meet' };
     var anims = {};
-    var playing = { table: true, nav: true };
+    var playing = { table: false, nav: false };
 
     anims.table = lottie.loadAnimation({
       container: document.getElementById('lottie-table'),
       renderer: 'svg',
       loop: true,
-      autoplay: true,
+      autoplay: false,
       animationData: window.tableAnimData,
       rendererSettings: rendererSettings
     });
@@ -140,7 +140,7 @@
       container: document.getElementById('lottie-nav'),
       renderer: 'svg',
       loop: true,
-      autoplay: true,
+      autoplay: false,
       animationData: window.navAnimData,
       rendererSettings: rendererSettings
     });
@@ -150,8 +150,8 @@
       if (playing[key]) {
         anims[key].pause();
         playing[key] = false;
-        btn.textContent = 'PLAY';
-        btn.setAttribute('aria-label', 'Play animation');
+        btn.textContent = 'COMPARE';
+        btn.setAttribute('aria-label', 'Compare designs');
       } else {
         anims[key].play();
         playing[key] = true;
