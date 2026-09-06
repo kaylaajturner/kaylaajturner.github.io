@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Table Page Modernization — Kayla Ann James Turner</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700&family=Merriweather:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../styles/tokens.css" />
+    <link rel="stylesheet" href="../styles/base.css" />
+    <link rel="stylesheet" href="../styles/components.css" />
+    <link rel="stylesheet" href="../styles/case-study.css" />
+  </head>
+  <body>
+    <!-- ===================== NAVIGATION ===================== -->
+    <nav class="site-nav" data-nav-behavior="hide-on-scroll">
+      <div class="container site-nav-inner">
+        <a class="site-nav-wordmark" href="../index.html">
+          <span class="site-nav-wordmark-full">KAYLA ANN JAMES TURNER</span>
+          <span class="site-nav-wordmark-short">KAYLA AJ TURNER</span>
+        </a>
+        <ul class="site-nav-links">
+          <li><a href="../index.html" class="site-nav-link">Home</a></li>
+          <li><a href="table-modernization.html" class="site-nav-link is-active"><span class="site-nav-link-full">P1 – Table</span><span class="site-nav-link-short">Table</span></a></li>
+          <li><a href="navigation-modernization.html" class="site-nav-link"><span class="site-nav-link-full">P2 – Navigation</span><span class="site-nav-link-short">Nav</span></a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <main>
+      <div class="container">
+
+        <!-- ===================== HEADER ===================== -->
+        <header class="case-header">
+          <div class="case-header-row">
+            <div class="case-header-main">
+              <h1 class="case-title">Table Page Modernization</h1>
+              <p class="case-meta">
+                Microsoft Advertising ‧ Pilot ongoing<br />
+                Microsoft Monetize ‧ Q2 2025
+              </p>
+            </div>
+            <p class="case-role">Solo / Lead designer for Table Page, other designer for Navigation refinements</p>
+          </div>
+        </header>
+
+        <!-- ===================== TOP COMPARISON ===================== -->
+        <div class="case-compare">
+          <div class="media-compare">
+            <div class="media-compare-frame">
+              <video muted loop playsinline preload="metadata">
+                <source src="../Assets/Compare Table.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <button class="btn-action" data-compare-btn aria-label="Compare designs">COMPARE</button>
+          </div>
+        </div>
+
+        <!-- ===================== CORE DRIVER ===================== -->
+        <section class="case-section">
+          <h2 class="section-heading">Core driver</h2>
+          <p class="case-prose text-measure">
+            Refactor and componentize table pages based on Fluent 2 style/tokens as part of Microsoft
+            Advertising UX Refresh initiative focused on increasing user CSAT / announcement at marketing
+            event in Cannes for demoing new AI functionality in April 2026.
+          </p>
+        </section>
+
+        <!-- ===================== ISSUES DISCOVERED ===================== -->
+        <section class="case-section">
+          <h2 class="section-heading">Issues discovered from audit/user DSAT</h2>
+
+          <div class="case-asset">
+            <p class="item-heading text-measure">1. Visually noisy</p>
+            <ul class="item-list item-list--horizontal text-measure">
+              <li>Color</li>
+              <li>Alignment</li>
+              <li>Spacing</li>
+              <li>Typography</li>
+              <li>Component appearances</li>
+            </ul>
+            <div class="case-asset-block">
+              <div class="case-media-row">
+                <div class="case-media surface">
+                  <img loading="lazy" src="../Assets/Table/Table - Main 1 - Table Issues 1.svg" alt="Table Issues 1" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="case-asset">
+            <p class="item-heading text-measure">2. Interaction inconsistencies</p>
+            <p class="case-prose text-measure">For example, dashed underlines usage not all having hover interactions</p>
+            <div class="case-asset-block">
+              <div class="case-media-row">
+                <div class="case-media surface">
+                  <video muted playsinline preload="metadata">
+                    <source src="../Assets/Table/Table - Main 2 - Statushovers.mp4" type="video/mp4" />
+                  </video>
+                  <button class="btn-action case-media-replay" hidden>Replay</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="case-asset">
+            <p class="item-heading text-measure">3. Editing/browsing columns UI cramped</p>
+            <div class="case-asset-block">
+              <div class="case-media-row">
+                <div class="case-media surface">
+                  <img loading="lazy" src="../Assets/Table/Table - Main 3 - Table Issues 3.svg" alt="Table Issues 3" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="case-asset">
+            <p class="item-heading text-measure">4. Filtering confusion (global vs local, separated, different visuals)</p>
+            <div class="case-asset-block">
+              <div class="case-media-row">
+                <div class="case-media">
+                  <img loading="lazy" src="../Assets/Table/Table - Main 4 - Filters-Scattered-Animation.svg" alt="Filters scattered animation" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== ADDITIONAL GOALS ===================== -->
+        <section class="case-section">
+          <h2 class="section-heading">Additional goals</h2>
+          <div class="grid-12 cards-4">
+            <div class="span-3 card">
+              <p>Maintain 70% user retention on UI before rolling out to next phase of users</p>
+            </div>
+            <div class="span-3 card">
+              <p>Establish design-to-code alignment for components</p>
+            </div>
+            <div class="span-3 card">
+              <p>Support theme migration for future phase</p>
+            </div>
+            <div class="span-3 card">
+              <p>Create a solid foundation of decisions for major workflows for MAP UX Refresh rollout</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== KEY DESIGN DECISIONS ===================== -->
+        <section class="case-section">
+          <h2 class="section-heading">Key design decisions</h2>
+
+          <div class="case-asset">
+            <div class="item-heading-row">
+              <p class="item-heading text-measure">1. Consolidated filtering into a single pattern</p>
+              <button class="btn-action" data-open-modal>View iteration examples</button>
+            </div>
+            <p class="case-prose text-measure">Global and local → Non-dismissable and dismissable</p>
+            <div class="case-asset-block">
+              <div class="case-media-row">
+                <div class="case-media surface">
+                  <video muted playsinline preload="metadata">
+                    <source src="../Assets/Table/Table - Main 5 - Addfilter.mp4" type="video/mp4" />
+                  </video>
+                  <button class="btn-action case-media-replay" hidden>Replay</button>
+                </div>
+              </div>
+            </div>
+            <p class="case-prose text-measure">Full bar space to display more applied filters, truncation toggle for user control in different situations</p>
+            <div class="case-asset-block">
+              <div class="case-media-row">
+                <div class="case-media surface">
+                  <video muted playsinline preload="metadata">
+                    <source src="../Assets/Table/Table - Main 6 - Filtertruncation.mp4" type="video/mp4" />
+                  </video>
+                  <button class="btn-action case-media-replay" hidden>Replay</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="case-asset">
+            <p class="item-heading text-measure">2. Gave column editing space</p>
+            <p class="case-prose text-measure">Tree component provides better browsing across groups</p>
+            <div class="case-asset-block">
+              <div class="case-media-row">
+                <div class="case-media surface">
+                  <video muted playsinline preload="metadata">
+                    <source src="../Assets/Table/Table - Main 7 - Browsecolumns.mp4" type="video/mp4" />
+                  </video>
+                  <button class="btn-action case-media-replay" hidden>Replay</button>
+                </div>
+              </div>
+            </div>
+            <p class="case-prose text-measure">Interaction tag list allows for easy removal and drag and drop to reorder</p>
+            <div class="case-asset-block">
+              <div class="case-media-row">
+                <div class="case-media surface">
+                  <video muted playsinline preload="metadata">
+                    <source src="../Assets/Table/Table - Main 8 - Reordercolumns.mp4" type="video/mp4" />
+                  </video>
+                  <button class="btn-action case-media-replay" hidden>Replay</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="case-asset">
+            <p class="item-heading text-measure">3. Improved visual design of base table components</p>
+            <p class="case-prose text-measure">True alignment of header text with cell content, cell content with other cell content</p>
+            <p class="case-prose text-measure">Simplification of cell template content, interactions, actions behavior and when to use</p>
+            <div class="case-asset-block">
+              <div class="case-media-row">
+                <div class="case-media surface">
+                  <video muted playsinline preload="metadata">
+                    <source src="../Assets/Table/Table - Main 9 - Tablerow.mp4" type="video/mp4" />
+                  </video>
+                  <button class="btn-action case-media-replay" hidden>Replay</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="case-asset">
+            <p class="item-heading text-measure">4. Quick actions available via table header cell buttons</p>
+            <p class="case-prose text-measure">Allows for quick filtering as well as custom column actions</p>
+            <p class="case-prose text-measure">Drag and drop to reorder in page quickly</p>
+            <div class="case-asset-block">
+              <div class="case-media-row">
+                <div class="case-media surface">
+                  <video muted playsinline preload="metadata">
+                    <source src="../Assets/Table/Table - Main 10 - Headerbutton.mp4" type="video/mp4" />
+                  </video>
+                  <button class="btn-action case-media-replay" hidden>Replay</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== AI AS A DECISION-SUPPORT TOOL ===================== -->
+        <section class="case-section">
+          <h2 class="section-heading">AI as a Decision-Support Tool</h2>
+          <div class="ai-decision-row">
+            <p class="case-prose">
+              Evaluating complex table behaviors through static mocks alone creates blind spots in
+              design-to-code fidelity. Many decisions are multifaceted, and reviewing all the combinations
+              can make stakeholders' eyes glaze over. To fix this, I used AI-assisted interactive
+              prototyping to model complex decisions, such as truncation thresholds and cell resting/hover
+              actions. Rather than coding fully functional table components (which is difficult even for
+              skilled software engineers), I scoped these lightweight, mid-fi prototypes to target specific
+              aspects to visually show trade-offs. Serving as interactive decision-support tools, they
+              enabled stakeholders to evaluate proposed patterns in real time, provide actionable feedback,
+              and increase speed toward a final decision.
+            </p>
+
+            <div class="ai-decision-card surface">
+              <p class="item-heading">Action Slot Grid Prototype</p>
+              <p class="case-prose">Configure how resting and hover actions are positioned within grid cells</p>
+              <div class="case-media">
+                <img loading="lazy" src="../Assets/Table/Table - Main 11 - Action Slot Grid.svg" alt="Action Slot Grid" />
+              </div>
+              <div class="case-section-actions">
+                <a class="btn-action" href="../prototypes/action-slot-grid/index.html" target="_blank" rel="noopener">View cell actions alignment decisioning prototype</a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== IMPACT ===================== -->
+        <section class="case-section">
+          <h2 class="section-heading">Impact</h2>
+          <div class="grid-12 cards-4">
+            <div class="span-3 card">
+              <p><strong>72%</strong> retained adoption on new UI for internal users (80% increase from low of 40% during initial dogfood)</p>
+            </div>
+            <div class="span-3 card">
+              <p><strong>94.8%</strong> retained adoption on new UI for first 1% of external users</p>
+            </div>
+            <div class="span-3 card">
+              <p>A more modern, scalable, consistent interaction framework that applies to ~80% of the products' surfaces</p>
+            </div>
+            <div class="span-3 card">
+              <p>Components created that match code in Figma/Storybook, utilizing tokens that can be rethemed in the future</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== LINKEDIN ===================== -->
+        <section class="case-section">
+          <h2 class="section-heading">LinkedIn posts from Microsoft Advertising users</h2>
+          <div class="grid-12 cards-2">
+            <div class="span-6 linkedin-embed">
+              <iframe loading="lazy" src="https://www.linkedin.com/embed/feed/update/urn:li:share:7497595711849480192?collapsed=1" height="433" width="504" frameborder="0" allowfullscreen title="Embedded post"></iframe>
+            </div>
+            <div class="span-6 linkedin-embed">
+              <iframe loading="lazy" src="https://www.linkedin.com/embed/feed/update/urn:li:share:7496149911889993728?collapsed=1" height="407" width="504" frameborder="0" allowfullscreen title="Embedded post"></iframe>
+            </div>
+            <div class="span-6 linkedin-embed">
+              <iframe loading="lazy" src="https://www.linkedin.com/embed/feed/update/urn:li:share:7490681295480438784?collapsed=1" height="540" width="504" frameborder="0" allowfullscreen title="Embedded post"></iframe>
+            </div>
+          </div>
+          <div class="case-section-actions case-section-actions--start">
+            <a class="btn-action" href="https://ads.microsoft.com" target="_blank" rel="noopener">Microsoft Advertising</a>
+          </div>
+        </section>
+
+        <!-- ===================== REVIEW PREVIOUS PROJECT ===================== -->
+        <div class="case-review">
+          <h2 class="section-heading">Review previous project</h2>
+          <a class="btn-action" href="navigation-modernization.html">Navigation Modernization</a>
+        </div>
+
+      </div>
+    </main>
+
+    <!-- ===================== FOOTER ===================== -->
+    <footer class="site-footer">
+      <div class="container">
+        <hr class="divider" />
+        <p class="footer-text">
+          kaylaajturner@gmail.com<br />
+          <a
+            href="https://www.linkedin.com/in/kayla-aj-turner/"
+            target="_blank"
+            rel="noopener noreferrer"
+            >https://www.linkedin.com/in/kayla-aj-turner/</a
+          >
+        </p>
+      </div>
+    </footer>
+
+    <!-- ===================== ITERATION EXAMPLES MODAL ===================== -->
+    <div class="iteration-modal-scrim"></div>
+    <div class="iteration-modal" role="dialog" aria-modal="true" aria-label="Filtering design iterations">
+      <div class="iteration-modal-header">
+        <h2 class="iteration-modal-title">Filtering design iterations</h2>
+        <button class="iteration-modal-close" aria-label="Close">
+          <img loading="lazy" src="../Assets/Dismiss.svg" alt="" />
+        </button>
+      </div>
+
+      <div class="iteration-modal-body">
+      <div class="iteration-modal-group">
+        <h3 class="iteration-modal-group-heading">Bulk/supportive information filters</h3>
+        <div class="iteration-modal-item">
+          <p>
+            Inspired by Microsoft Clarity, I explored a filter concept that allowed for bulk editing
+            filters, as well as adding more supportive information to each filter selection to
+            understand the impact of the selection. Unfortunately, this approach wasn't feasible due to
+            performance - loading all the data would take too long/be too resource intensive.
+          </p>
+          <div class="iteration-modal-media-row">
+            <div class="iteration-modal-media surface">
+              <img loading="lazy" src="../Assets/Table/Table - Modal 1 - Bulk filters 1.svg" alt="Bulk filters 1" style="aspect-ratio: 1132 / 855;" />
+            </div>
+          </div>
+        </div>
+        <div class="iteration-modal-item">
+          <p>
+            Another hidden requirement for filters was being able to apply more than one statement per
+            filter. Although I designed a viable path forward in the bulk approach, this was deemed too
+            complex for a UI trying to simplify the experience for new users.
+          </p>
+          <div class="iteration-modal-media-row">
+            <div class="iteration-modal-media surface">
+              <img loading="lazy" src="../Assets/Table/Table - Modal 2 - Bulk filters 2.svg" alt="Bulk filters 2" style="aspect-ratio: 1132 / 681;" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="iteration-modal-group">
+        <h3 class="iteration-modal-group-heading">Smart / AI Filters</h3>
+        <div class="iteration-modal-item">
+          <p>
+            Various methods of utilizing AI to provide better suggested filters/columns were explored,
+            but these were put on the backburner due to needing to focus on getting the basics completed
+            first.
+          </p>
+          <div class="iteration-modal-media-row">
+            <img loading="lazy" src="../Assets/Table/Table - Modal 3 - Smart AI Filters 1.svg" alt="Smart AI Filters 1" />
+            <img loading="lazy" src="../Assets/Table/Table - Modal 4 - Smart AI Filters 2.svg" alt="Smart AI Filters 2" />
+          </div>
+        </div>
+      </div>
+
+      <div class="iteration-modal-group">
+        <h3 class="iteration-modal-group-heading">Exploratory carrying filters between pages</h3>
+        <div class="iteration-modal-item">
+          <p>
+            Most filter applications are temporary/exploratory, so the team had a hypothesis that
+            saving/naming filters might feel too heavy for that workflow. We tested this interaction of
+            carrying filters across pages where the filters can be shared, but this was met with
+            confusion by users - they said this gave little value for them, and let them set filters by
+            page.
+          </p>
+          <div class="iteration-modal-media-row">
+            <img loading="lazy" src="../Assets/Table/Table - Modal 5 - Filter Carry 1.svg" alt="Filter Carry 1" />
+            <img loading="lazy" src="../Assets/Table/Table - Modal 6 - Filter Carry 2.svg" alt="Filter Carry 2" />
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+
+    <script src="../scripts/nav.js"></script>
+    <script src="../scripts/modal.js"></script>
+    <script src="../scripts/media.js"></script>
+  </body>
+</html>

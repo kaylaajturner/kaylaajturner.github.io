@@ -13,22 +13,35 @@
       rel="stylesheet"
     />
 
-    <!-- Lottie web library -->
-    <script src="https://unpkg.com/lottie-web@5.12.2/build/player/lottie.min.js"></script>
-    <!-- Lottie animation data (inline JS — works over file:// and GitHub Pages) -->
-    <script src="LottieAnimations/table-animation2.js"></script>
-    <script src="LottieAnimations/nav-animation2.js"></script>
-
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles/tokens.css" />
+    <link rel="stylesheet" href="styles/base.css" />
+    <link rel="stylesheet" href="styles/components.css" />
+    <link rel="stylesheet" href="styles/home.css" />
   </head>
   <body>
+    <!-- ===================== NAVIGATION ===================== -->
+    <nav class="site-nav" data-nav-behavior="reveal">
+      <div class="container site-nav-inner">
+        <a class="site-nav-wordmark" href="index.html">
+          <span class="site-nav-wordmark-full">KAYLA ANN JAMES TURNER</span>
+          <span class="site-nav-wordmark-short">KAYLA AJ TURNER</span>
+        </a>
+        <ul class="site-nav-links">
+          <li><a href="index.html" class="site-nav-link is-active">Home</a></li>
+          <li><a href="case-studies/table-modernization.html" class="site-nav-link"><span class="site-nav-link-full">P1 – Table</span><span class="site-nav-link-short">Table</span></a></li>
+          <li><a href="case-studies/navigation-modernization.html" class="site-nav-link"><span class="site-nav-link-full">P2 – Navigation</span><span class="site-nav-link-short">Nav</span></a></li>
+        </ul>
+      </div>
+    </nav>
+
     <!-- ===================== HEADER ===================== -->
     <header class="site-header">
       <div class="container">
         <h1 class="site-name">KAYLA ANN JAMES TURNER</h1>
-        <p class="site-subtitle">
-          Product Designer at Microsoft AI Monetization<br />
-          Uniting design systems and products into a cohesive suite
+        <p class="site-subtitle">AI-Enhanced Product and System Designer</p>
+        <p class="site-tagline">
+          Helping B2B and B2C platforms streamline complex workflows into
+          scalable components that keep both beginners and experts in mind
         </p>
       </div>
     </header>
@@ -48,26 +61,32 @@
             <div class="project-meta">
               <h2 class="project-title">Table Modernization</h2>
               <p class="project-tags">
-                <span class="tag-company">Microsoft Advertising</span>
-                <span class="tag-separator"> ‧ </span>Ongoing<br />
-                <span class="tag-company">Microsoft Monetize</span>
-                <span class="tag-separator"> ‧ </span>Q2 2025
+                Microsoft Advertising ‧ Pilot ongoing<br />
+                Microsoft Monetize ‧ Q2 2025
               </p>
             </div>
-            <p class="project-description">
-              Simplified table page experiences while maintaining/increasing
-              usability and discovery parity with previous designs. Extended a
-              core design&#8209;system component to support complex enterprise
-              needs, including distinct interaction patterns for different user
-              audiences.
-            </p>
+            <div class="project-description-col">
+              <p class="project-description">
+                Led a ground-up redesign of Microsoft Advertising's table experience
+                as part of the organization's broader UX Refresh initiative, driving
+                94.8% adoption in early external rollout. Replaced fragmented
+                filtering and cramped column controls with a scalable, Fluent
+                2&#8209;aligned component system now reused across ~80% of the
+                product's surfaces.
+              </p>
+              <div class="project-actions">
+                <a class="btn-action" href="case-studies/table-modernization.html">View case study</a>
+              </div>
+            </div>
           </div>
 
-          <div class="lottie-container">
-            <div class="lottie-wrap">
-              <div id="lottie-table"></div>
+          <div class="media-compare">
+            <div class="media-compare-frame">
+              <video muted loop playsinline preload="metadata">
+                <source src="Assets/Compare Table.mp4" type="video/mp4" />
+              </video>
             </div>
-            <button class="lottie-btn" id="btn-table" aria-label="Compare designs" onclick="toggleAnim('table')">COMPARE</button>
+            <button class="btn-action" data-compare-btn aria-label="Compare designs">COMPARE</button>
           </div>
         </div>
       </section>
@@ -84,24 +103,31 @@
             <div class="project-meta">
               <h2 class="project-title">Navigation Modernization</h2>
               <p class="project-tags">
-                <span class="tag-company">Microsoft Advertising</span>
-                <span class="tag-separator"> ‧ </span>Q1 2024
+                Microsoft Advertising ‧ Q1 2024<br />
+                Microsoft Monetize/Curate ‧ Q1 2025
               </p>
             </div>
-            <p class="project-description">
-              Unified Smart and Expert modes into a scalable, personalizable
-              navigation experience,
-              <strong>increasing 5&#8209;star feedback by 23%.</strong>
-              Established a reusable navigation component across monetization
-              products, including acquired Xandr products Monetize and Curate.
-            </p>
+            <div class="project-description-col">
+              <p class="project-description">
+                Unified Smart and Expert modes into a scalable, personalizable
+                navigation experience,
+                <strong>increasing 5&#8209;star feedback by 23%.</strong>
+                Established a reusable navigation component across monetization
+                products, including acquired Xandr products Monetize and Curate.
+              </p>
+              <div class="project-actions">
+                <a class="btn-action" href="case-studies/navigation-modernization.html">View case study</a>
+              </div>
+            </div>
           </div>
 
-          <div class="lottie-container">
-            <div class="lottie-wrap">
-              <div id="lottie-nav"></div>
+          <div class="media-compare">
+            <div class="media-compare-frame">
+              <video muted loop playsinline preload="metadata">
+                <source src="Assets/Compare Nav.mp4" type="video/mp4" />
+              </video>
             </div>
-            <button class="lottie-btn" id="btn-nav" aria-label="Compare designs" onclick="toggleAnim('nav')">COMPARE</button>
+            <button class="btn-action" data-compare-btn aria-label="Compare designs">COMPARE</button>
           </div>
         </div>
       </section>
@@ -123,42 +149,8 @@
         </p>
       </div>
     </footer>
-  <script>
-    var rendererSettings = { preserveAspectRatio: 'xMidYMid meet' };
-    var anims = {};
-    var playing = { table: false, nav: false };
 
-    anims.table = lottie.loadAnimation({
-      container: document.getElementById('lottie-table'),
-      renderer: 'svg',
-      loop: true,
-      autoplay: false,
-      animationData: window.tableAnimData,
-      rendererSettings: rendererSettings
-    });
-    anims.nav = lottie.loadAnimation({
-      container: document.getElementById('lottie-nav'),
-      renderer: 'svg',
-      loop: true,
-      autoplay: false,
-      animationData: window.navAnimData,
-      rendererSettings: rendererSettings
-    });
-
-    function toggleAnim(key) {
-      var btn = document.getElementById('btn-' + key);
-      if (playing[key]) {
-        anims[key].pause();
-        playing[key] = false;
-        btn.textContent = 'COMPARE';
-        btn.setAttribute('aria-label', 'Compare designs');
-      } else {
-        anims[key].play();
-        playing[key] = true;
-        btn.textContent = 'PAUSE';
-        btn.setAttribute('aria-label', 'Pause animation');
-      }
-    }
-  </script>
+    <script src="scripts/nav.js"></script>
+    <script src="scripts/media.js"></script>
   </body>
 </html>

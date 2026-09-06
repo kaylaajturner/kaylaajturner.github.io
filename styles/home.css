@@ -1,0 +1,166 @@
+/* ==========================================================================
+   Home page
+   ========================================================================== */
+
+.site-header {
+  padding-top: 65px;
+  padding-bottom: 40px;
+  text-align: center;
+}
+
+.site-name {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--text-hero-name);
+  color: var(--color-muted);
+  line-height: normal;
+  letter-spacing: 0.04em;
+  margin-bottom: 48px;
+}
+
+.site-subtitle {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #353535;
+}
+
+.site-tagline {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--text-body);
+  line-height: 24px;
+  color: var(--color-body);
+  max-width: 630px;
+  margin: 8px auto 0;
+}
+
+/* ==========================================================================
+   Project Sections
+   ========================================================================== */
+
+.project {
+  padding-top: 94px;
+  padding-bottom: 94px;
+}
+
+/* Two-column text row: narrow left (title/tags), wide right (description) */
+.project-text {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2.25fr);
+  gap: 2rem;
+  margin-bottom: 40px;
+  align-items: start;
+}
+
+.project-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+/* Matches .case-title on the case study pages (same weight/size/color) so
+   the project name reads as the same kind of heading in both places. */
+.project-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-case-header);
+  color: var(--color-ink);
+  line-height: normal;
+}
+
+.project-tags {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: var(--text-meta);
+  line-height: 24px;
+  color: var(--color-body);
+}
+
+.project-description-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.project-description {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--text-body);
+  line-height: 24px;
+  color: var(--color-body);
+  padding-top: 2px;
+}
+
+.project-description strong {
+  font-weight: 600;
+  color: var(--color-body);
+}
+
+/* Action slot at the end of the description — houses "View case study".
+   Left-aligned so it lines up with the paragraph above it instead of
+   trailing alone in the empty space on the far right of the wide
+   description column. */
+.project-actions {
+  display: flex;
+  justify-content: flex-start;
+}
+
+/* ==========================================================================
+   Responsive — Tablet (≤ 900px)
+   ========================================================================== */
+
+@media (max-width: 900px) {
+  .project {
+    padding-top: 64px;
+    padding-bottom: 56px;
+  }
+
+  .project-text {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-bottom: 32px;
+  }
+}
+
+/* ==========================================================================
+   Responsive — Mobile (≤ 600px)
+   ========================================================================== */
+
+@media (max-width: 600px) {
+  .site-header {
+    padding-top: 40px;
+    padding-bottom: 28px;
+  }
+
+  .site-name {
+    font-size: 20px;
+  }
+
+  .site-subtitle {
+    font-size: 15px;
+  }
+
+  .project {
+    padding-top: 48px;
+    padding-bottom: 40px;
+  }
+
+  .project-title {
+    font-size: 20px;
+  }
+
+  .project-text {
+    margin-bottom: 24px;
+  }
+
+  .project-actions {
+    justify-content: stretch;
+  }
+
+  .project-actions .btn-action {
+    width: 100%;
+    justify-content: center;
+  }
+}
