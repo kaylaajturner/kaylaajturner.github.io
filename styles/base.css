@@ -1,0 +1,223 @@
+/* ==========================================================================
+   Reset & Base
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Author-stylesheet component rules (e.g. .btn-action's display:inline-flex)
+   otherwise win the cascade over the UA [hidden] rule at equal specificity —
+   restore it explicitly so hidden buttons/elements actually disappear. */
+[hidden] {
+  display: none !important;
+}
+
+/* ==========================================================================
+   Layout — centered container + 12-column grid
+   ========================================================================== */
+
+.container {
+  max-width: var(--grid-max);
+  margin: 0 auto;
+  padding: 0 var(--grid-margin);
+}
+
+/* Reusable 12-column grid; children opt in with .span-N */
+.grid-12 {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns), 1fr);
+  gap: var(--grid-gutter);
+}
+
+.span-3 {
+  grid-column: span 3;
+}
+
+.span-4 {
+  grid-column: span 4;
+}
+
+.span-6 {
+  grid-column: span 6;
+}
+
+.span-8 {
+  grid-column: span 8;
+}
+
+/* Prose measure: keeps paragraphs off the full page width at wide desktop */
+.text-measure {
+  max-width: var(--text-measure-max);
+}
+
+@media (max-width: 800px) {
+  .text-measure {
+    max-width: none;
+  }
+}
+
+/* ==========================================================================
+   Divider
+   ========================================================================== */
+
+.divider {
+  border: none;
+  border-top: 1px solid var(--color-hairline);
+}
+
+.divider-row {
+  width: 100%;
+}
+
+/* ==========================================================================
+   Shared action-button style (Assets/Stylesheet.png: "Button text,
+   Barlow 16 Semibold, #5c5c5c", outlined, white fill)
+   Used by: home page Compare/Pause + View details, case study Read more/less,
+   View iteration examples, and Replay.
+   ========================================================================== */
+
+.btn-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-button);
+  color: var(--color-btn-text);
+  background: var(--color-btn-bg);
+  border: 1px solid var(--color-btn-border);
+  border-radius: 8px;
+  padding: 7px 16px 9px;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.btn-action:hover {
+  background: var(--color-btn-bg-hover);
+}
+
+/* ==========================================================================
+   Shared surface style (Assets/Stylesheet.png: fill #F5F5F5, stroke
+   #E5E5E5 1px, corner radius 12px) — used behind SVG/media asset blocks
+   ========================================================================== */
+
+.surface {
+  background: var(--color-surface);
+  border: 1px solid var(--color-surface-stroke);
+  border-radius: var(--surface-radius);
+}
+
+/* ==========================================================================
+   Comparison media (mp4) + Compare/Pause toggle button
+   Shared by the home page cards and each case study's top-of-page comparison.
+   ========================================================================== */
+
+.media-compare {
+  position: relative;
+}
+
+.media-compare-frame {
+  width: 100%;
+  /* Matches native asset dimensions 1440 × 900 (16:10) for edge-to-edge fill */
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--surface-radius);
+  background: var(--color-surface);
+}
+
+.media-compare-frame video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.media-compare .btn-action {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+}
+
+/* ==========================================================================
+   Footer (shared across pages)
+   ========================================================================== */
+
+.site-footer {
+  padding-bottom: 56px;
+}
+
+.site-footer .divider {
+  margin-bottom: 45px;
+}
+
+.footer-text {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--color-body);
+  text-align: center;
+}
+
+.footer-text a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.footer-text a:hover {
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   Responsive — Tablet (≤ 900px)
+   ========================================================================== */
+
+@media (max-width: 900px) {
+  .container {
+    padding: 0 var(--grid-margin-tablet);
+  }
+
+  /* Card rows collapse one tier before fully stacking on mobile */
+  .grid-12.cards-4 > * {
+    grid-column: span 6;
+  }
+
+  .grid-12.cards-2 > * {
+    grid-column: span 12;
+  }
+}
+
+/* ==========================================================================
+   Responsive — Mobile (≤ 600px)
+   ========================================================================== */
+
+@media (max-width: 600px) {
+  .container {
+    padding: 0 var(--grid-margin-mobile);
+  }
+
+  .grid-12 > * {
+    grid-column: span 12 !important;
+  }
+}

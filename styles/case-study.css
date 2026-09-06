@@ -1,0 +1,691 @@
+/* ==========================================================================
+   Case study page — shared template for Table & Navigation Modernization
+   ========================================================================== */
+
+.case-header {
+  padding-top: calc(var(--nav-height) + 56px);
+  padding-bottom: 40px;
+}
+
+/* Title + meta on the left, role attribution on the right — bottom-aligned
+   so the role text sits level with the last line of meta rather than
+   floating up next to the title. */
+.case-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 40px;
+}
+
+.case-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-case-header);
+  color: var(--color-ink);
+  margin-bottom: 12px;
+}
+
+.case-meta {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: var(--text-meta);
+  line-height: 24px;
+  color: var(--color-body);
+}
+
+/* Styled like body copy (.case-prose), not the quieter Merriweather meta
+   line — this reads as case-study context, not decorative metadata, so it
+   shouldn't visually blend into the company/date line. */
+.case-role {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--text-body);
+  line-height: 24px;
+  color: var(--color-body);
+  text-align: right;
+  max-width: 360px;
+  flex-shrink: 0;
+}
+
+/* Comparison video, top of page, above Core driver */
+.case-compare {
+  padding-bottom: 40px;
+}
+
+.case-section {
+  padding-top: 48px;
+  padding-bottom: 48px;
+  border-top: 1px solid var(--color-hairline);
+}
+
+.case-section:first-of-type {
+  border-top: none;
+  padding-top: 0;
+}
+
+.section-heading {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--text-section-heading);
+  color: var(--color-section-heading);
+  margin-bottom: 24px;
+}
+
+.section-subheading {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--text-section-heading);
+  color: var(--color-section-heading);
+  margin: 40px 0 12px;
+  padding-left: 16px;
+  border-left: 2px solid var(--color-hairline);
+}
+
+.case-prose {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--text-body);
+  line-height: 24px;
+  color: var(--color-body);
+}
+
+.case-prose + .case-prose {
+  margin-top: 12px;
+}
+
+/* Inside a .case-asset, spacing between items is already handled by the
+   generic child-margin rule below — don't stack an extra top margin on top
+   of that here too. */
+.case-asset > .case-prose + .case-prose {
+  margin-top: 0;
+}
+
+/* Two (or more) consecutive body-text lines with no media between them —
+   e.g. "Merged scope and context..."'s pair of bullets-turned-paragraphs —
+   read as a tight, related pair, not separate sections, so they get a much
+   smaller gap than the generic 16px every other child of .case-asset gets.
+   Only applies when the *next* sibling is also prose; a caption still gets
+   the full generic spacing (or the larger 40px rule above) before its own
+   media. */
+.case-asset > .case-prose:has(+ .case-prose) {
+  margin-bottom: 4px;
+}
+
+/* When a caption follows a *different* media block (the interleaved
+   heading/prose/media/prose/media items — "Consolidated filtering",
+   "Gave column editing space"), give it more room above than below so it
+   visually binds to the media that comes AFTER it, not the one before.
+   Sibling margins collapse to the larger value, so this beats the media's
+   own 16px margin-bottom without needing to touch that generic rule. */
+.case-asset > .case-asset-block + .case-prose {
+  margin-top: 40px;
+}
+
+/* ==========================================================================
+   AI as a Decision-Support Tool — paragraph left, prototype card right
+   (matches Table Page Modernization.png: the Action Slot Grid card sits
+   beside the paragraph, not stacked below it, with its own heading/intro
+   text/image/CTA all nested inside one surface card).
+   ========================================================================== */
+
+.ai-decision-row {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: var(--grid-gutter);
+  align-items: start;
+}
+
+.ai-decision-card {
+  padding: 24px;
+}
+
+.ai-decision-card .case-prose {
+  margin-bottom: 16px;
+}
+
+.ai-decision-card .case-media {
+  margin-bottom: 16px;
+}
+
+.ai-decision-card .case-section-actions {
+  margin-top: 0;
+}
+
+/* ==========================================================================
+   Asset blocks: media + bottom-pinned description overlay
+   ========================================================================== */
+
+.case-asset {
+  margin-bottom: 72px;
+}
+
+.case-asset:last-child {
+  margin-bottom: 0;
+}
+
+/* One asset per row, full width — never side by side. */
+.case-asset-block {
+  position: relative;
+}
+
+.case-media-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--grid-gutter);
+}
+
+.case-media {
+  position: relative;
+}
+
+.case-media img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Videos show at their native recorded size (never upscaled to fill the
+   full column width, which read as oversized/blurry) — just capped so they
+   never overflow the column on narrow viewports. */
+.case-media video {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Full static product-screenshot SVGs show as-is, full-bleed, no card
+   (Table Issues 1, Filters-Scattered-Animation — matches the assets that
+   render as complete screenshots in Table Page Modernization.png).
+   Every video, the Action Slot Grid comparison, and any other image that
+   reads as an isolated UI fragment rather than a full page screenshot
+   (e.g. Table Issues 3's "Modify columns" panel) gets .surface: the
+   reference's "blank" boxes for video slots are the designed surface card
+   itself (Figma just can't render video playback in a flat export) — and
+   the padding/bounding box it gives .case-media is also what keeps the
+   Replay button visually anchored to the same card as its video, rather
+   than floating in the corner of an otherwise-invisible full-width row. */
+.case-media.surface {
+  min-height: 200px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Inside a surface card, an image shows at its native size (capped to the
+   column) instead of stretching edge-to-edge — full-bleed-and-huge is
+   exactly what the surface treatment is meant to avoid for an isolated UI
+   fragment (e.g. Table Issues 3's "Modify columns" panel, which read as
+   overwhelming at full column width on its own). */
+.case-media.surface img {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.case-media-replay {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+}
+
+/* ==========================================================================
+   Item content: subheader + body text + optional bulleted list, always
+   placed BEFORE its media within a .case-asset. Spacing is handled
+   generically (every direct child of .case-asset gets a bottom margin
+   except the last), so any sequence — heading, prose, media, prose, media,
+   actions — spaces out consistently without per-combination rules.
+   ========================================================================== */
+
+.case-asset > * {
+  margin-bottom: 16px;
+}
+
+.case-asset > *:last-child {
+  margin-bottom: 0;
+}
+
+/* Subheader for individual Issues discovered / Key design decisions items.
+   Merriweather (serif) deliberately contrasts with the Barlow section
+   headings and body text around it, so numbered items read as distinct
+   without needing bullet markers. */
+.item-heading {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: var(--text-item-heading);
+  line-height: 24px;
+  color: var(--color-ink);
+  margin-bottom: 8px !important;
+}
+
+.item-list {
+  padding-left: 18px;
+}
+
+.item-list li {
+  font-family: var(--font-display);
+  font-size: var(--text-body);
+  line-height: 24px;
+  color: var(--color-body);
+  margin-bottom: 2px;
+}
+
+/* Runs items left-to-right when the column has room, wrapping to the next
+   line instead of stacking one-per-row (used for short, tag-like items). */
+.item-list--horizontal {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 24px;
+  row-gap: 4px;
+}
+
+.item-list--horizontal li {
+  margin-bottom: 0;
+}
+
+/* Heading + an inline action (e.g. View iteration examples), top-aligned in
+   the same row instead of the action trailing after the media below.
+   The button is positioned absolutely rather than laid out as a flex
+   sibling: a flex row's height is the *taller* of its children, and
+   .btn-action is taller than the heading's own 24px line-height, so as a
+   normal flex child it was inflating the row's box height and pushing the
+   next paragraph down well past the 8px gap every other section's heading
+   uses. Taking the button out of flow keeps this row's height equal to
+   just the heading's line, so margin-bottom: 8px below matches everywhere
+   else exactly. (Same technique `.media-compare .btn-action` already uses
+   to sit over its video without affecting layout height.) The heading's
+   padding-right reserves room so its text wraps clear of the button
+   instead of running under it, at any viewport width. */
+.case-asset > .item-heading-row {
+  position: relative;
+  margin-bottom: 8px;
+}
+
+.item-heading-row .item-heading {
+  margin-bottom: 0 !important;
+  padding-right: 260px;
+}
+
+.item-heading-row .btn-action {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+/* Standalone asset with no caption content (still gets the surface treatment) */
+.case-asset-plain .case-media {
+  min-height: 0;
+}
+
+/* ==========================================================================
+   Side-by-side exception: "Replaced 'Tools' junk drawer..." (Navigation
+   page, Key design decisions #1). Every other item on this site keeps text
+   stacked above its media ("never side by side" — see the Layout rule
+   note), but Kayla confirmed this one specifically matches how it was
+   actually laid out in the original Figma design: each bullet stacks above
+   its own image (text above, image below — same as everywhere else), and
+   those two text+image groups sit side by side as two columns in one row.
+   ========================================================================== */
+.case-decision-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--grid-gutter);
+  align-items: start;
+}
+
+.case-decision-col > * {
+  margin-bottom: 16px;
+}
+
+.case-decision-col > *:last-child {
+  margin-bottom: 0;
+}
+
+/* Shared treatment for a surfaced asset with a Figma shadow-bleed export
+   margin (a floating dialog/panel mockup exported with extra blank canvas
+   below its drop shadow) — first used for the Table modal's two "Bulk
+   filters" images, reused here for Navigation's "Browse Tools Dialog".
+   Drops the surface's own bottom padding (the image's built-in shadow
+   already provides visual breathing room, so a second helping of padding
+   on top of it read as too much gray) and forces the image to stretch full
+   width with object-fit: contain, sized via a per-image inline
+   aspect-ratio measured from where that specific asset's real content
+   actually ends (see DECISIONS.md) — never crops, unlike `cover`. */
+.surface--shadow-trim {
+  padding-bottom: 0;
+}
+
+.surface--shadow-trim img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* ==========================================================================
+   Card rows: Issues discovered / Additional goals / Impact
+   ========================================================================== */
+
+.card p {
+  font-family: var(--font-display);
+  font-size: var(--text-body);
+  line-height: 24px;
+  color: var(--color-body);
+}
+
+/* A stat-card row (Additional goals, Impact) has no margin of its own by
+   default, so when something follows it in the same section — e.g.
+   Navigation's Impact section has a numbered item after its 4 stat cards —
+   the two ran directly into each other with no gap at all. Harmless when a
+   card row happens to be the section's last element too (the section's own
+   padding-bottom already provides closing space; this just adds a little
+   more). */
+.grid-12.cards-4,
+.grid-12.cards-2 {
+  margin-bottom: 40px;
+}
+
+/* ==========================================================================
+   LinkedIn embeds
+   ========================================================================== */
+
+.linkedin-embed {
+  display: flex;
+  justify-content: center;
+}
+
+/* Navigation's single embed reads better left-aligned with the rest of the
+   page's content instead of centered in the full-width row — same idea as
+   .case-section-actions--start. Table's multiple embeds stay centered
+   within their own grid column, unaffected. */
+.linkedin-embed--start {
+  justify-content: flex-start;
+}
+
+/* LinkedIn's own 504px default width is just a suggestion, not a platform
+   limit — the embed page inside the iframe reflows to whatever width it's
+   given. 588px is this grid's own computed span-6 column width at the
+   widest desktop breakpoint (1200px usable content at --grid-max, minus one
+   24px gutter, split two ways), so each embed fills its half of the 2-across
+   row edge to edge there instead of leaving space on either side, while
+   still capping how wide a single post gets once `.cards-2` collapses to
+   one full-width column at tablet/mobile (its height stays fixed per post
+   regardless of width, so uncapped width would look increasingly flat). */
+.linkedin-embed iframe {
+  width: 100%;
+  max-width: 588px;
+  border: none;
+}
+
+/* ==========================================================================
+   Section actions (CTA buttons not tied to an overlay)
+   ========================================================================== */
+
+.case-section-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* A single, standalone action with nothing beside it (e.g. the Microsoft
+   Advertising link) reads as its own line item, not a trailing CTA — left
+   aligned instead of pinned to the right edge. */
+.case-section-actions--start {
+  justify-content: flex-start;
+}
+
+/* ==========================================================================
+   Review next/previous project
+   ========================================================================== */
+
+.case-review {
+  padding-top: 48px;
+  padding-bottom: 48px;
+  border-top: 1px solid var(--color-hairline);
+  text-align: center;
+}
+
+/* ==========================================================================
+   Iteration examples modal
+   ========================================================================== */
+
+.iteration-modal-scrim {
+  position: fixed;
+  inset: 0;
+  background: rgba(26, 26, 26, 0.45);
+  z-index: 200;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.iteration-modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(1040px, calc(100% - 160px));
+  background: var(--color-bg);
+  z-index: 201;
+  overflow-y: auto;
+  transform: translateX(100%);
+  transition: transform 0.25s ease;
+}
+
+.iteration-modal-scrim.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.iteration-modal.is-open {
+  transform: translateX(0);
+}
+
+/* Sticks to the top of the modal's own scroll area as its content scrolls
+   underneath — same idea as the site nav, just scoped to this panel instead
+   of the viewport. Full-width bar (stroke goes edge to edge of the modal,
+   not just the content padding) with vertically centered content, matching
+   the nav's own header treatment. */
+.iteration-modal-header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--nav-height);
+  padding: 0 56px;
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-hairline);
+}
+
+.iteration-modal-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--text-nav-wordmark);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-body);
+}
+
+.iteration-modal-body {
+  padding: 40px 56px 64px;
+}
+
+.iteration-modal-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 0;
+}
+
+.iteration-modal-close img {
+  width: 12px;
+  height: 12px;
+  display: block;
+}
+
+.iteration-modal-group {
+  padding-top: 32px;
+  padding-bottom: 32px;
+}
+
+.iteration-modal-group:first-of-type {
+  padding-top: 0;
+}
+
+/* Same subheader style as .item-heading (Issues discovered / Key design
+   decisions) — Merriweather Bold, deliberately distinct from the Barlow
+   section headings, so this modal's group titles read consistently with
+   the rest of the page rather than looking like a separate type scale. */
+.iteration-modal-group-heading {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: var(--text-item-heading);
+  line-height: 24px;
+  color: var(--color-ink);
+  margin-bottom: 8px;
+}
+
+.iteration-modal-item {
+  margin-bottom: 24px;
+}
+
+.iteration-modal-item:last-child {
+  margin-bottom: 0;
+}
+
+/* One image per row, always — matches the reference: nothing in this modal
+   sits side by side, including the Smart/AI Filters and filter-carry pairs. */
+.iteration-modal-media-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--grid-gutter);
+}
+
+.iteration-modal-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Isolated component mockups (the Bulk/supportive filters panel) sit on the
+   same surface card used elsewhere on the site; full product screenshots
+   (Smart/AI Filters, filter-carry) stay full-bleed with no wrapper. */
+.iteration-modal-media {
+  padding: 24px;
+}
+
+/* Both Bulk/supportive filters SVGs export with several dozen px of empty
+   canvas below their drop shadow (Figma's export bleed) — with the surface's
+   uniform padding, that read as noticeably more gray below the panel than
+   above it. Each image sets its own shorter aspect-ratio inline to shrink
+   the card back down. object-fit: contain scales the whole image down to
+   fit that shorter box with nothing cropped — including the shadow itself,
+   which extends further than it first appears — at the cost of a small,
+   even sliver of extra surface showing on the left/right instead (letterboxed,
+   not top/bottom). Do not switch this to `cover`: cover crops to fill the
+   box exactly, which cuts into the visible shadow, not just the dead space
+   past it — confirmed by Kayla after the first version of this fix. */
+.iteration-modal-media.surface img {
+  object-fit: contain;
+}
+
+/* These two are the only `.iteration-modal-media.surface` cards on the page,
+   so this safely special-cases just them: even after shrinking the image
+   itself (above), the card's own uniform 24px bottom padding was still
+   adding a further sliver of gray the top/sides don't have, since the image
+   no longer reaches the padding's inner edge on its own. Dropping just the
+   bottom padding here — instead of changing the shared `.iteration-modal-media`
+   rule every other surface card also uses — balances top/bottom evenly. */
+.iteration-modal-media.surface {
+  padding-bottom: 0;
+}
+
+.iteration-modal-item p {
+  font-family: var(--font-display);
+  font-size: var(--text-body);
+  line-height: 24px;
+  color: var(--color-body);
+  margin-bottom: 16px;
+}
+
+body.iteration-modal-open {
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   Responsive — Tablet (≤ 900px)
+   ========================================================================== */
+
+@media (max-width: 900px) {
+  .case-header {
+    padding-top: calc(var(--nav-height) + 40px);
+  }
+
+  .case-decision-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .case-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .case-role {
+    text-align: left;
+    max-width: none;
+  }
+
+  .iteration-modal {
+    width: 100%;
+  }
+
+  .iteration-modal-header {
+    padding: 0 24px;
+  }
+
+  .iteration-modal-body {
+    padding: 32px 24px 48px;
+  }
+
+  .ai-decision-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================================
+   Responsive — Mobile (≤ 600px)
+   ========================================================================== */
+
+@media (max-width: 600px) {
+  .case-section {
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+
+  .case-section-actions {
+    justify-content: stretch;
+  }
+
+  .case-section-actions .btn-action {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .item-heading-row .item-heading {
+    padding-right: 0;
+  }
+
+  .item-heading-row .btn-action {
+    position: static;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    margin-top: 12px;
+  }
+}

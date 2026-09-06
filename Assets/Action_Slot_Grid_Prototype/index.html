@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><base href="/app/kayla-turner-qnegow/">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Action Slot Grid Prototype</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body, #root { margin: 0; padding: 0; height: 100%; font-family: 'Segoe UI', -apple-system, sans-serif; }
+
+    /* App layout */
+    .app-root { display: flex; flex-direction: column; height: 100%; }
+    .app-header {
+      display: flex; align-items: baseline; gap: 12px;
+      padding: 20px 24px; border-bottom: 1px solid #e0e0e0; flex-shrink: 0;
+    }
+    .app-header h2 { margin: 0; font-size: 20px; font-weight: 600; }
+    .app-header .subtitle { color: #707070; font-size: 12px; }
+    .grid-area { flex: 1; overflow: auto; padding: 8px; }
+
+    /* Data row hover */
+    .data-row:hover .hover-action { opacity: 1 !important; }
+    .data-row.selected { background-color: #eff6fc; }
+
+    /* Force top alignment on Fluent TableCell */
+    td.fui-TableCell { vertical-align: top; }
+
+    /* Cell layout */
+    .cell-container {
+      display: flex; align-items: flex-start; position: relative;
+      width: 100%; min-height: 44px; box-sizing: border-box;
+      padding: 12px;
+    }
+    .cell-left { text-align: left; }
+    .cell-right { text-align: right; }
+    .content-group {
+      flex: 1 1 0; display: flex; align-items: flex-start;
+      gap: 4px; min-width: 0; overflow: hidden;
+    }
+    .content-group-right { justify-content: flex-end; }
+    .content-group-left { justify-content: flex-start; }
+    .cell-content { flex: 0 1 auto; min-width: 0; overflow: hidden; }
+    .action-wrapper { flex-shrink: 0; display: flex; align-items: center; z-index: 1; }
+    .hover-action { opacity: 0; transition: opacity 0.15s ease; }
+    .abs-left { position: absolute; left: 8px; top: 12px; }
+    .abs-right { position: absolute; right: 8px; top: 12px; }
+    .pad-left-36 { padding-left: 24px; }
+    .pad-right-36 { padding-right: 24px; }
+    .pad-left-72 { padding-left: 60px; }
+    .pad-right-72 { padding-right: 60px; }
+    .pad-left-108 { padding-left: 96px; }
+    .pad-right-108 { padding-right: 96px; }
+    .hidden { display: none; }
+
+    /* Status cell */
+    .status-container {
+      display: flex; align-items: flex-start; min-height: 44px;
+      padding: 17px 12px;
+    }
+
+    /* Budget cell */
+    .budget-wrapper { display: flex; flex-direction: column; align-items: flex-end; }
+    .budget-name { color: #115ea3; text-align: right; margin-top: 2px; font-size: 11px; }
+
+    /* Delivery cell */
+    .col-delivery .cell-container { padding-left: 8px; }
+    .suggestion-icon { color: #0f6cbd; cursor: pointer; }
+
+    /* Clicks cell */
+    .cell-value { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .fluctuation-icon { color: #0f6cbd; }
+
+    /* Conversions cell */
+    .warning-badge-icon { color: #d13438; cursor: pointer; }
+
+    /* Name cell */
+    .name-text {
+      display: block; white-space: normal; overflow-wrap: anywhere;
+      line-height: 1.4; font-size: 12px;
+    }
+    .name-link {
+      white-space: normal; overflow-wrap: anywhere; text-align: left;
+      color: #115ea3; text-decoration: none;
+    }
+    .name-link:hover { text-decoration: underline; }
+
+    /* Landscape icon */
+    .landscape-icon { color: #0f6cbd; }
+
+    /* Controls panel */
+    .controls-panel {
+      border-top: 1px solid #e0e0e0; background: #fafafa; flex-shrink: 0;
+    }
+    .controls-toggle {
+      display: flex; align-items: center; gap: 8px; padding: 8px 16px;
+      cursor: pointer; font-weight: 600; font-size: 14px;
+      background: none; border: none; width: 100%; text-align: left;
+    }
+    .controls-toggle:hover { background: #f0f0f0; }
+    .controls-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 12px; column-gap: 40px; padding: 8px 20px 16px;
+    }
+    .control-group { display: flex; flex-direction: column; gap: 4px; }
+    .control-group label.group-label { font-weight: 600; font-size: 13px; margin-bottom: 2px; }
+    .controls-section { display: flex; flex-direction: column; gap: 12px; }
+    .controls-section-header { font-weight: 600; font-size: 14px; color: #242424; }
+    .radio-option { display: flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer; }
+    .radio-option input { margin: 0; }
+    .switch-row { grid-column: 1 / -1; padding-top: 4px; display: flex; align-items: center; gap: 8px; }
+    .switch-row input[type="checkbox"] { width: 40px; height: 20px; }
+
+    /* Preset bar */
+    .preset-bar {
+      display: flex; flex-direction: column; gap: 8px;
+      padding: 12px 24px; border-bottom: 1px solid #e0e0e0; flex-shrink: 0;
+    }
+    .preset-bar-top {
+      display: flex; align-items: flex-start; justify-content: space-between;
+    }
+    .preset-bar-left { display: flex; flex-direction: column; gap: 8px; }
+    .preset-label { font-weight: 600; font-size: 14px; }
+    .preset-buttons { display: flex; gap: 8px; align-items: center; }
+    .preset-description { font-size: 12px; color: #707070; }
+    .preset-bar-right { display: flex; align-items: center; flex-shrink: 0; }
+
+    /* Column header buttons */
+    th { overflow: hidden; }
+    th button.fui-TableHeaderCell__button,
+    th button[class*="TableHeaderCell__button"] {
+      cursor: pointer;
+      border-radius: 4px;
+      padding: 0 12px;
+      font-weight: 600;
+      font-size: 12px;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box !important;
+      transition: background-color 0.1s ease;
+    }
+    th button.fui-TableHeaderCell__button:hover,
+    th button[class*="TableHeaderCell__button"]:hover {
+      background-color: #f5f5f5;
+    }
+    th button.fui-TableHeaderCell__button:active,
+    th button[class*="TableHeaderCell__button"]:active {
+      background-color: #e8e8e8;
+    }
+    th.col-budget button.fui-TableHeaderCell__button,
+    th.col-clicks button.fui-TableHeaderCell__button,
+    th.col-conv button.fui-TableHeaderCell__button,
+    th.col-budget button[class*="TableHeaderCell__button"],
+    th.col-clicks button[class*="TableHeaderCell__button"],
+    th.col-conv button[class*="TableHeaderCell__button"] {
+      justify-content: flex-end;
+      text-align: right;
+    }
+
+    /* Column dividers */
+    th, td { border-right: 1px solid var(--colorNeutralStroke3, #f0f0f0); }
+    th:last-child, td:last-child { border-right: none; }
+    th.col-checkbox, td.col-checkbox,
+    th.col-status, td.col-status { border-right: none; }
+
+    /* Column widths */
+    .col-checkbox { width: 44px; max-width: 44px; }
+    td.col-checkbox { padding-top: 4px; }
+    .col-status { width: 44px; max-width: 44px; }
+    .col-name { min-width: 200px; }
+    .col-budget { min-width: 200px; }
+    .col-delivery { width: 180px; min-width: 160px; }
+    .col-clicks { width: 140px; min-width: 120px; }
+    .col-conv { width: 140px; min-width: 120px; }
+  </style>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "react": "https://esm.sh/react@18.3.1",
+        "react/jsx-runtime": "https://esm.sh/react@18.3.1/jsx-runtime",
+        "react-dom": "https://esm.sh/react-dom@18.3.1",
+        "react-dom/client": "https://esm.sh/react-dom@18.3.1/client",
+        "@fluentui/react-components": "https://esm.sh/@fluentui/react-components@9.46.0?external=react,react-dom",
+        "@fluentui/react-icons": "https://esm.sh/@fluentui/react-icons@2.0.256?external=react"
+      }
+    }
+  </script>
+<script>(function(){
+if(!navigator.serviceWorker)return;
+try{var d=Object.getOwnPropertyDescriptor(Navigator.prototype,"serviceWorker");
+if(d&&d.configurable){delete Navigator.prototype.serviceWorker;
+console.warn("[VibeHub] Service workers disabled — not available in hosted apps")}}catch(e){}
+if("serviceWorker"in navigator){try{
+Object.defineProperty(navigator,"serviceWorker",{value:undefined,configurable:true});
+console.warn("[VibeHub] Service workers overridden — not available in hosted apps")}catch(e){}}
+})()</script></head>
+<body>
+  <div id="root">
+    <div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:sans-serif;font-size:16px;">
+      Loading…
+    </div>
+  </div>
+  <script type="text/babel" data-type="module">
+    import React, { useState, useMemo } from 'react';
+    import { createRoot } from 'react-dom/client';
+    import {
+      FluentProvider,
+      webLightTheme,
+      Table,
+      TableBody,
+      TableCell,
+      TableHeader,
+      TableHeaderCell,
+      TableRow,
+      Checkbox,
+      Badge,
+      Button,
+      Link,
+      Accordion,
+      AccordionHeader,
+      AccordionItem,
+      AccordionPanel,
+      Label,
+      Radio,
+      RadioGroup,
+      Switch,
+      Dropdown,
+      Option,
+    } from '@fluentui/react-components';
+    import {
+      Edit20Regular,
+      Sparkle20Regular,
+      ArrowTrendingLines20Regular,
+      Warning20Regular,
+      LightbulbFilament20Regular,
+      PresenceAvailable10Filled,
+      Pause16Filled,
+      ChevronDown20Regular,
+      ChevronRight20Regular,
+    } from '@fluentui/react-icons';
+
+    // ── Mock Data ──────────────────────────────────────────────────
+
+    const DEFAULT_CONFIG = {
+      leftAlignedActionOrder: 'hover-first',
+      rightAlignedActionOrder: 'hover-first',
+      leftAlignedHoverAlignment: 'inline',
+      leftAlignedRestingAlignment: 'right-edge',
+      rightAlignedHoverAlignment: 'inline',
+      rightAlignedRestingAlignment: 'left-edge',
+      hideRestingActions: false,
+    };
+
+    const PRESETS = [
+      {
+        id: 'aesthetics',
+        label: 'Pure aesthetics',
+        description: 'Both rest and hover states are visually appealing due to no trapped empty space zones or moving location of hover actions between rows.',
+        config: {
+          leftAlignedActionOrder: 'hover-first',
+          rightAlignedActionOrder: 'resting-first',
+          leftAlignedHoverAlignment: 'right-edge',
+          leftAlignedRestingAlignment: 'right-edge',
+          rightAlignedHoverAlignment: 'left-edge',
+          rightAlignedRestingAlignment: 'left-edge',
+        },
+      },
+      {
+        id: 'discovery',
+        label: 'Discovery + some aesthetics',
+        description: 'Inline has best discovery and aesthetics maintained for rest state, but inline actions move/can cause some visual/usability issues moving between rows.',
+        config: {
+          leftAlignedActionOrder: 'hover-first',
+          rightAlignedActionOrder: 'hover-first',
+          leftAlignedHoverAlignment: 'inline',
+          leftAlignedRestingAlignment: 'right-edge',
+          rightAlignedHoverAlignment: 'inline',
+          rightAlignedRestingAlignment: 'left-edge',
+        },
+      },
+      {
+        id: 'usability',
+        label: 'Pure usability',
+        description: 'Edit always comes after content, supplemental information on far edge away from main content.',
+        config: {
+          leftAlignedActionOrder: 'hover-first',
+          rightAlignedActionOrder: 'hover-first',
+          leftAlignedHoverAlignment: 'inline',
+          leftAlignedRestingAlignment: 'right-edge',
+          rightAlignedHoverAlignment: 'right-edge',
+          rightAlignedRestingAlignment: 'left-edge',
+        },
+      },
+    ];
+
+    const mockCampaigns = [
+      { Id: 1001, Status: 'Active', Name: 'Brand - US', Budget: { Amount: 25, Type: 'DailyStandard' }, DeliveryStatus: 'Eligible', BiddingScheme: { Type: 'ManualCpc' }, PerformanceMetrics: { Clicks: 42, ConversionsCredit: 3.50 }, IsNew: true, HasBudgetSuggestion: true, AvailableInsightTypeIds: [] },
+      { Id: 1002, Status: 'Active', Name: 'Holiday Sale Performance Max Campaign', Budget: { Amount: 500, Type: 'DailyStandard', Id: 5001, Name: 'Holiday Budget' }, DeliveryStatus: 'Eligible', BiddingScheme: { Type: 'MaxConversions' }, PerformanceMetrics: { Clicks: 56789, ConversionsCredit: 842.15 }, GoalStatusDetails: [{ GoalDeliveryStatus: 'TagUnverified' }], HasBudgetSuggestion: true, AvailableInsightTypeIds: ['2'] },
+      { Id: 1003, Status: 'Paused', Name: '2026 Q2 Winter Clearance Performance Max Brand & Non-Brand Combined Campaign - US & UK Markets', Budget: { Amount: 999999.99, Type: 'DailyStandard' }, DeliveryStatus: 'EditorialRejected', DeliveryStatusDetails: ['AdGroupExpired', 'BudgetPaused'], BiddingScheme: { Type: 'EnhancedCpc' }, PerformanceMetrics: { Clicks: 0, ConversionsCredit: 0 }, HasBudgetSuggestion: true },
+      { Id: 1004, Status: 'Active', Name: 'DSA - West', Budget: { Amount: 1, Type: 'DailyStandard' }, DeliveryStatus: 'InlineOpportunity', BiddingScheme: { Type: 'ManualCpc' }, PerformanceMetrics: { Clicks: 5, ConversionsCredit: 0.25 }, GoalStatusDetails: [{ GoalDeliveryStatus: 'NoEligibleGoal' }], IsNew: true, HasBudgetSuggestion: true },
+      { Id: 1005, Status: 'Active', Name: 'Summer Promo Search Campaign 2026', Budget: { Amount: 150, Type: 'DailyStandard', Id: 5002, Name: 'Q2 2026 International Markets Shared Budget Pool' }, DeliveryStatus: 'Eligible', BiddingScheme: { Type: 'TargetCpa' }, PerformanceMetrics: { Clicks: 1234, ConversionsCredit: 89.42 }, GoalStatusDetails: [{ GoalDeliveryStatus: 'TagInactive' }], AvailableInsightTypeIds: ['2'] },
+      { Id: 1006, Status: 'Paused', Name: 'Retarget US', Budget: { Amount: 50, Type: 'DailyStandard' }, DeliveryStatus: 'CampaignConversionTagUnverified', DeliveryStatusDetails: ['CampaignConversionTagUnverified'], BiddingScheme: { Type: 'EnhancedCpc' }, PerformanceMetrics: { Clicks: 1234567, ConversionsCredit: 15234.88 }, GoalStatusDetails: [{ GoalDeliveryStatus: 'TagUnverified' }], HasBudgetSuggestion: true, AvailableInsightTypeIds: ['2'] },
+      { Id: 1007, Status: 'Active', Name: 'Back to School Fall Awareness Brand Safety Certified Performance Max - All Regions & Demographics', Budget: { Amount: 75, Type: 'DailyStandard' }, DeliveryStatus: 'Eligible', BiddingScheme: { Type: 'TargetRoas' }, PerformanceMetrics: { Clicks: 789, ConversionsCredit: 45.00 } },
+      { Id: 1008, Status: 'Active', Name: 'Shopping Feed - Global', Budget: { Amount: 3000, Type: 'DailyStandard', Id: 5003, Name: 'Shopping Bud.' }, DeliveryStatus: 'Eligible', BiddingScheme: { Type: 'ManualCpc' }, PerformanceMetrics: { Clicks: 15432, ConversionsCredit: 1200.75 }, GoalStatusDetails: [{ GoalDeliveryStatus: 'NoRecentOfflineConversion' }], HasBudgetSuggestion: true, AvailableInsightTypeIds: ['2'] },
+      { Id: 1009, Status: 'Paused', Name: 'Year-End Inventory Clearance Display Campaign', Budget: { Amount: 10, Type: 'DailyStandard' }, DeliveryStatus: 'EditorialRejected', DeliveryStatusDetails: ['EditorialRejected'], BiddingScheme: { Type: 'MaxConversions' }, PerformanceMetrics: { Clicks: 0, ConversionsCredit: 0 }, GoalStatusDetails: [{ GoalDeliveryStatus: 'NoEligibleGoal' }], IsNew: true },
+      { Id: 1010, Status: 'Active', Name: 'App Install', Budget: { Amount: 250, Type: 'DailyStandard' }, DeliveryStatus: 'Eligible', BiddingScheme: { Type: 'EnhancedCpc' }, PerformanceMetrics: { Clicks: 234, ConversionsCredit: 12.00 }, HasBudgetSuggestion: true },
+      { Id: 1011, Status: 'Active', Name: 'Black Friday Cyber Monday Extended Weekend Multi-Channel Acquisition Campaign - US CA MX', Budget: { Amount: 1500, Type: 'DailyStandard' }, DeliveryStatus: 'InlineOpportunity', BiddingScheme: { Type: 'ManualCpc' }, PerformanceMetrics: { Clicks: 8901, ConversionsCredit: 567.33 }, GoalStatusDetails: [{ GoalDeliveryStatus: 'TagInactive' }], HasBudgetSuggestion: true, AvailableInsightTypeIds: ['2'] },
+      { Id: 1012, Status: 'Paused', Name: 'Lead Gen - EMEA', Budget: { Amount: 45, Type: 'DailyStandard', Id: 5004, Name: 'Q2 Global Marketing Budget' }, DeliveryStatus: 'Eligible', BiddingScheme: { Type: 'TargetCpa' }, PerformanceMetrics: { Clicks: 67, ConversionsCredit: 8.50 } },
+      { Id: 1013, Status: 'Active', Name: 'Competitor Conquest Search Non-Brand', Budget: { Amount: 800, Type: 'DailyStandard' }, DeliveryStatus: 'Eligible', BiddingScheme: { Type: 'EnhancedCpc' }, PerformanceMetrics: { Clicks: 23456, ConversionsCredit: 1890.22 }, GoalStatusDetails: [{ GoalDeliveryStatus: 'TagUnverified' }], HasBudgetSuggestion: true, AvailableInsightTypeIds: ['2'] },
+      { Id: 1014, Status: 'Active', Name: 'Exact Match', Budget: { Amount: 100, Type: 'DailyStandard' }, DeliveryStatus: 'Eligible', BiddingScheme: { Type: 'ManualCpc' }, PerformanceMetrics: { Clicks: 3456, ConversionsCredit: 234.00 }, HasBudgetSuggestion: true },
+      { Id: 1015, Status: 'Paused', Name: 'Q1 2026 Product Launch Global Awareness Performance Max With Store Visits & Brand Lift Study - APAC EMEA LATAM', Budget: { Amount: 50000, Type: 'DailyStandard', Id: 5005, Name: 'Enterprise Global Shared Budget 2026' }, DeliveryStatus: 'CampaignConversionTagUnverified', DeliveryStatusDetails: ['CampaignConversionTagUnverified'], BiddingScheme: { Type: 'MaxConversions' }, PerformanceMetrics: { Clicks: 0, ConversionsCredit: 0 }, GoalStatusDetails: [{ GoalDeliveryStatus: 'NoEligibleGoal' }] },
+      { Id: 1016, Status: 'Active', Name: 'Video Ads', Budget: { Amount: 15.50, Type: 'DailyStandard' }, DeliveryStatus: 'Eligible', BiddingScheme: { Type: 'EnhancedCpc' }, PerformanceMetrics: { Clicks: 12345, ConversionsCredit: 678.90 }, HasBudgetSuggestion: true, AvailableInsightTypeIds: ['2'] },
+      { Id: 1017, Status: 'Active', Name: 'B2B LinkedIn Audience Expansion Search', Budget: { Amount: 2000, Type: 'DailyStandard' }, DeliveryStatus: 'InlineOpportunity', BiddingScheme: { Type: 'TargetRoas' }, PerformanceMetrics: { Clicks: 456, ConversionsCredit: 34.25 }, GoalStatusDetails: [{ GoalDeliveryStatus: 'NoRecentOfflineConversion' }] },
+      { Id: 1018, Status: 'Paused', Name: 'Broad Match', Budget: { Amount: 35, Type: 'DailyStandard' }, DeliveryStatus: 'Eligible', BiddingScheme: { Type: 'ManualCpc' }, PerformanceMetrics: { Clicks: 89, ConversionsCredit: 5.75 }, HasBudgetSuggestion: true },
+    ];
+
+    // ── Formatting Helpers ─────────────────────────────────────────
+
+    const fmtCurrency = (amount, currency = 'USD') =>
+      new Intl.NumberFormat('en-US', { style: 'currency', currency, minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(amount);
+
+    const fmtInteger = (n) =>
+      new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(n);
+
+    const fmtDecimal = (n) =>
+      new Intl.NumberFormat('en-US', { maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(n);
+
+    // ── ActionSlotCell ─────────────────────────────────────────────
+
+    const ActionSlotCell = ({ children, alignment, config, hoverAction, restingAction, columnHasHover, columnRestingCount }) => {
+      const isRight = alignment === 'right';
+      const actionOrder = isRight ? config.rightAlignedActionOrder : config.leftAlignedActionOrder;
+      const hoverAlignment = isRight ? config.rightAlignedHoverAlignment : config.leftAlignedHoverAlignment;
+      const restingAlignment = isRight ? config.rightAlignedRestingAlignment : config.leftAlignedRestingAlignment;
+      const hideResting = config.hideRestingActions;
+
+      // Normalize restingAction: support single element or array (null elements become spacers)
+      const restingList = Array.isArray(restingAction)
+        ? restingAction
+        : (restingAction != null ? [restingAction] : []);
+
+      const hasHover = !!hoverAction;
+      const hasResting = restingList.some(a => !!a) && !hideResting;
+
+      // Column-level metadata for consistent padding across rows
+      const effectiveHasHover = columnHasHover ?? hasHover;
+      const effectiveRestingCount = columnRestingCount ?? restingList.length;
+
+      const resolveEdge = (actionAlignment) => {
+        if (actionAlignment === 'inline') return isRight ? 'inline-left' : 'inline-right';
+        return actionAlignment;
+      };
+
+      const hoverEdge = resolveEdge(hoverAlignment);
+      const restingEdge = resolveEdge(restingAlignment);
+
+      // Build ordered slots for each position bucket.
+      // When both actions target the same position, reserve a spacer for
+      // whichever action is absent so the other stays at a fixed offset.
+      const sameEdge = hoverEdge === restingEdge;
+
+      const buildSlots = () => {
+        const hoverSlots = effectiveHasHover ? [{ type: 'hover', edge: hoverEdge }] : [];
+        const restingSlots = Array.from({ length: effectiveRestingCount }, (_, i) =>
+          ({ type: 'resting', edge: restingEdge, index: i }));
+
+        const ordered = actionOrder === 'resting-first'
+          ? [...restingSlots, ...hoverSlots]
+          : [...hoverSlots, ...restingSlots];
+
+        return ordered.map(slot => {
+          const isInline = slot.edge === 'inline-left' || slot.edge === 'inline-right';
+          if (slot.type === 'hover') {
+            if (hasHover) return { ...slot, el: hoverAction, render: 'hover' };
+            if ((sameEdge && hasResting) || isInline) return { ...slot, el: null, render: 'spacer' };
+            return null;
+          } else {
+            const el = slot.index < restingList.length ? restingList[slot.index] : null;
+            if (!!el && !hideResting) return { ...slot, el, render: 'resting' };
+            if (effectiveRestingCount > 1 || (sameEdge && effectiveHasHover) || isInline) return { ...slot, el: null, render: 'spacer' };
+            return null;
+          }
+        }).filter(Boolean);
+      };
+
+      const slots = buildSlots();
+
+      // Group slots by position bucket
+      const buckets = { 'left-edge': [], 'right-edge': [], 'inline-left': [], 'inline-right': [] };
+      for (const slot of slots) {
+        buckets[slot.edge].push(slot);
+      }
+
+      // Ensure inline buckets always reserve space for 2 actions.
+      // Place padding spacers on the EDGE side (away from content) so the
+      // real action stays adjacent to content with only the 4px gap.
+      for (const pos of ['inline-left', 'inline-right']) {
+        while (buckets[pos].length > 0 && buckets[pos].length < 2) {
+          const padSlot = { type: 'pad', edge: pos, render: 'spacer' };
+          if (pos === 'inline-left') {
+            buckets[pos].unshift(padSlot);
+          } else {
+            buckets[pos].push(padSlot);
+          }
+        }
+      }
+
+      const renderBucket = (bucket, position) => {
+        if (bucket.length === 0) return null;
+        const isAbsolute = position === 'left-edge' || position === 'right-edge';
+        const clsBase = isAbsolute ? (position === 'left-edge' ? 'abs-left' : 'abs-right') : '';
+        const slotWidth = isAbsolute ? '24px' : undefined;
+        return (
+          <div className={`action-wrapper ${clsBase}`} style={{ display: 'flex', gap: '0px' }}>
+            {bucket.map((slot, i) => {
+              if (slot.render === 'spacer') {
+                return <div key={i} style={{ width: slotWidth || '24px', flexShrink: 0 }} />;
+              }
+              return (
+                <div key={i} className={slot.render === 'hover' ? 'hover-action' : ''}
+                  style={slotWidth ? { width: slotWidth, flexShrink: 0, overflow: 'visible', display: 'flex', justifyContent: 'center' } : undefined}>
+                  {slot.el}
+                </div>
+              );
+            })}
+          </div>
+        );
+      };
+
+      const hiddenRestingEl = restingAction && hideResting ? (
+        <div className="action-wrapper hidden">{restingAction}</div>
+      ) : null;
+
+      // Compute padding for absolute-positioned actions based on CONFIGURED
+      // alignment, not per-row presence. This ensures all rows in a column
+      // reserve the same edge space, so content stays at a consistent width.
+      let leftEdgeReserved = 0;
+      let rightEdgeReserved = 0;
+      if (effectiveHasHover && hoverEdge === 'left-edge') leftEdgeReserved++;
+      if (effectiveRestingCount > 0 && restingEdge === 'left-edge') leftEdgeReserved += effectiveRestingCount;
+      if (effectiveHasHover && hoverEdge === 'right-edge') rightEdgeReserved++;
+      if (effectiveRestingCount > 0 && restingEdge === 'right-edge') rightEdgeReserved += effectiveRestingCount;
+
+      const padClass = (count, side) => {
+        if (count >= 3) return `pad-${side}-108`;
+        if (count >= 2) return `pad-${side}-72`;
+        if (count >= 1) return `pad-${side}-36`;
+        return '';
+      };
+      const contentGroupCls = [
+        'content-group',
+        isRight ? 'content-group-right' : 'content-group-left',
+        padClass(leftEdgeReserved, 'left'),
+        padClass(rightEdgeReserved, 'right'),
+      ].filter(Boolean).join(' ');
+
+      return (
+        <div className={`cell-container ${isRight ? 'cell-right' : 'cell-left'}`}>
+          {renderBucket(buckets['left-edge'], 'left-edge')}
+          <div className={contentGroupCls}>
+            {renderBucket(buckets['inline-left'], 'inline-left')}
+            <div className="cell-content">{children}</div>
+            {renderBucket(buckets['inline-right'], 'inline-right')}
+          </div>
+          {renderBucket(buckets['right-edge'], 'right-edge')}
+          {hiddenRestingEl}
+        </div>
+      );
+    };
+
+    // ── Cell Renderers ─────────────────────────────────────────────
+
+    const StatusCell = ({ item }) => {
+      const isActive = item.Status === 'Active';
+      return (
+        <div className="status-container">
+          {isActive
+            ? <PresenceAvailable10Filled style={{ fontSize: '10px', color: '#13a10e' }} />
+            : <Pause16Filled style={{ fontSize: '10px', color: '#707070' }} />}
+        </div>
+      );
+    };
+
+    const CampaignNameCell = ({ item, config }) => {
+      const hoverAction = (
+        <Button appearance="subtle" size="small" icon={<Edit20Regular />} aria-label="Edit campaign name" />
+      );
+      const restingAction = item.IsNew ? (
+        <Button appearance="subtle" size="small"
+          icon={<Sparkle20Regular className="fluctuation-icon" />}
+          aria-label="New campaign" style={{ opacity: 1 }}
+        />
+      ) : undefined;
+
+      return (
+        <ActionSlotCell alignment="left" config={config} hoverAction={hoverAction} restingAction={restingAction}
+          columnHasHover={true} columnRestingCount={1}>
+          <a href="#" className="name-link" onClick={e => e.preventDefault()}>
+            <span className="name-text">{item.Name}</span>
+          </a>
+        </ActionSlotCell>
+      );
+    };
+
+    const BID_LANDSCAPE_TYPES = ['ManualCpc', 'EnhancedCpc'];
+
+    const BudgetCell = ({ item, config }) => {
+      const hasBidLandscape = BID_LANDSCAPE_TYPES.includes(item.BiddingScheme?.Type || '');
+      const hoverAction = (
+        <Button appearance="subtle" size="small" icon={<Edit20Regular />} aria-label="Edit budget" />
+      );
+      const restingAction = hasBidLandscape ? (
+        <Button appearance="subtle" size="small"
+          icon={<ArrowTrendingLines20Regular className="landscape-icon" />}
+          aria-label="Campaign bid landscape" style={{ opacity: 1 }}
+        />
+      ) : undefined;
+
+      return (
+        <ActionSlotCell alignment="right" config={config} hoverAction={hoverAction} restingAction={restingAction}
+          columnHasHover={true} columnRestingCount={1}>
+          <div className="budget-wrapper">
+            <span style={{ fontSize: '12px' }}>{fmtCurrency(item.Budget.Amount)} / day</span>
+            {item.Budget.Name && (
+              <span className="budget-name">{item.Budget.Name}</span>
+            )}
+          </div>
+        </ActionSlotCell>
+      );
+    };
+
+    const DELIVERY_STATUS_TEXT = {
+      Eligible: 'Eligible',
+      EditorialRejected: 'Rejected',
+      CampaignConversionTagUnverified: 'Tag unverified',
+      InlineOpportunity: 'Eligible',
+    };
+    const ERROR_STATUSES = ['EditorialRejected', 'CampaignConversionTagUnverified'];
+    const NORMAL_STATUSES = ['Eligible', 'InlineOpportunity'];
+
+    const DeliveryCell = ({ item, config }) => {
+      const status = item.DeliveryStatus;
+      const text = DELIVERY_STATUS_TEXT[status] || status;
+      const isError = ERROR_STATUSES.includes(status);
+      const isNormal = NORMAL_STATUSES.includes(status);
+
+      let badgeColor = 'warning';
+      let badgeAppearance = 'tint';
+      if (isError) { badgeColor = 'danger'; badgeAppearance = 'tint'; }
+      else if (isNormal) { badgeColor = 'informative'; badgeAppearance = 'ghost'; }
+
+      const restingAction = item.HasBudgetSuggestion ? (
+        <ArrowTrendingLines20Regular className="suggestion-icon" aria-label="View budget recommendations" />
+      ) : undefined;
+
+      return (
+        <ActionSlotCell alignment="left" config={config} restingAction={restingAction}
+          columnHasHover={false} columnRestingCount={1}>
+          <Badge appearance={badgeAppearance} size="large" shape="circular" color={badgeColor}>
+            {text}
+          </Badge>
+        </ActionSlotCell>
+      );
+    };
+
+    const ClicksCell = ({ item, config }) => {
+      const hasFluctuation = item.AvailableInsightTypeIds?.includes('2') ?? false;
+      const restingAction = hasFluctuation ? (
+        <Button appearance="subtle" size="small"
+          icon={<LightbulbFilament20Regular className="fluctuation-icon" />}
+          aria-label="View insights" style={{ opacity: 1 }}
+        />
+      ) : undefined;
+
+      return (
+        <ActionSlotCell alignment="right" config={config} restingAction={restingAction}
+          columnHasHover={false} columnRestingCount={1}>
+          <span className="cell-value" style={{ fontSize: '12px' }}>
+            {fmtInteger(item.PerformanceMetrics.Clicks)}
+          </span>
+        </ActionSlotCell>
+      );
+    };
+
+    const WARN_STATUSES = ['NoEligibleGoal', 'TagUnverified', 'TagInactive', 'NoRecentOfflineConversion'];
+
+    const ConversionsCell = ({ item, config }) => {
+      const hasWarning = item.GoalStatusDetails?.some(
+        g => WARN_STATUSES.includes(g.GoalDeliveryStatus)
+      ) ?? false;
+      const hasGoal = item.PerformanceMetrics.ConversionsCredit > 50;
+
+      const warningAction = hasWarning ? (
+        <Badge size="large" appearance="ghost" color="danger" icon={<Warning20Regular />} />
+      ) : null;
+      const goalAction = hasGoal ? (
+        <Button appearance="subtle" size="small"
+          icon={<LightbulbFilament20Regular className="fluctuation-icon" />}
+          aria-label="View conversion goal" style={{ opacity: 1 }}
+        />
+      ) : null;
+
+      const restingAction = [warningAction, goalAction];
+
+      return (
+        <ActionSlotCell alignment="right" config={config} restingAction={restingAction}
+          columnHasHover={false} columnRestingCount={2}>
+          <span className="cell-value" style={{ fontSize: '12px' }}>
+            {fmtDecimal(item.PerformanceMetrics.ConversionsCredit)}
+          </span>
+        </ActionSlotCell>
+      );
+    };
+
+    // ── Header Padding ─────────────────────────────────────────────
+
+    const COLUMN_ACTION_MAP = {
+      Name: { hasHover: true, hasResting: true, alignment: 'left' },
+      Delivery: { hasHover: false, hasResting: true, alignment: 'left' },
+      Budget: { hasHover: true, hasResting: true, alignment: 'right' },
+      Clicks: { hasHover: false, hasResting: true, alignment: 'right' },
+      ConversionsCredit: { hasHover: false, restingCount: 2, alignment: 'right' },
+    };
+
+    function computeHeaderPadding(columnId, config) {
+      const meta = COLUMN_ACTION_MAP[columnId];
+      if (!meta) return {};
+      const isRight = meta.alignment === 'right';
+      const hoverAlignment = isRight ? config.rightAlignedHoverAlignment : config.leftAlignedHoverAlignment;
+      const restingAlignment = isRight ? config.rightAlignedRestingAlignment : config.leftAlignedRestingAlignment;
+      let paddingRight = 0;
+      let paddingLeft = 0;
+      const addPad = (alignment) => {
+        if (alignment === 'left-edge') paddingLeft += 36;
+        else if (alignment === 'right-edge') paddingRight += 36;
+      };
+      if (meta.hasHover) addPad(hoverAlignment);
+      const restingCount = meta.restingCount || (meta.hasResting ? 1 : 0);
+      for (let i = 0; i < restingCount; i++) addPad(restingAlignment);
+      return {
+        ...(paddingRight > 0 && { paddingRight: `${paddingRight}px` }),
+        ...(paddingLeft > 0 && { paddingLeft: `${paddingLeft}px` }),
+      };
+    }
+
+    // ── ActionSlotGrid ─────────────────────────────────────────────
+
+    const ActionSlotGrid = ({ data, config }) => {
+      const [selectedIds, setSelectedIds] = useState(new Set());
+      const allIds = useMemo(() => data.map(r => r.Id), [data]);
+      const allSelected = selectedIds.size === data.length && data.length > 0;
+      const someSelected = selectedIds.size > 0 && !allSelected;
+
+      const toggleSelectAll = () => {
+        setSelectedIds(allSelected ? new Set() : new Set(allIds));
+      };
+      const toggleRow = (id) => {
+        setSelectedIds(prev => {
+          const next = new Set(prev);
+          next.has(id) ? next.delete(id) : next.add(id);
+          return next;
+        });
+      };
+
+      const nameHeaderPad = computeHeaderPadding('Name', config);
+      const budgetHeaderPad = computeHeaderPadding('Budget', config);
+      const deliveryHeaderPad = computeHeaderPadding('Delivery', config);
+      const clicksHeaderPad = computeHeaderPadding('Clicks', config);
+      const convHeaderPad = computeHeaderPadding('ConversionsCredit', config);
+
+      return (
+        <Table aria-label="Action slot demo grid" style={{ minWidth: '900px' }}>
+          <TableHeader>
+            <TableRow>
+              <TableHeaderCell className="col-checkbox">
+                <Checkbox
+                  checked={allSelected ? true : someSelected ? 'mixed' : false}
+                  onChange={toggleSelectAll}
+                  aria-label="Select all"
+                />
+              </TableHeaderCell>
+              <TableHeaderCell className="col-status" button={{ as: 'button', onClick: () => {} }} />
+              <TableHeaderCell className="col-name" button={{ as: 'button', onClick: () => {}, style: nameHeaderPad }}>Campaign name</TableHeaderCell>
+              <TableHeaderCell className="col-budget" button={{ as: 'button', onClick: () => {}, style: budgetHeaderPad }}>Daily budget</TableHeaderCell>
+              <TableHeaderCell className="col-delivery" button={{ as: 'button', onClick: () => {}, style: deliveryHeaderPad }}>Delivery</TableHeaderCell>
+              <TableHeaderCell className="col-clicks" button={{ as: 'button', onClick: () => {}, style: clicksHeaderPad }}>Clicks</TableHeaderCell>
+              <TableHeaderCell className="col-conv" button={{ as: 'button', onClick: () => {}, style: convHeaderPad }}>Conv.</TableHeaderCell>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {data.map(item => (
+              <TableRow
+                key={item.Id}
+                className={`data-row${selectedIds.has(item.Id) ? ' selected' : ''}`}
+                appearance={selectedIds.has(item.Id) ? 'brand' : undefined}
+              >
+                <TableCell className="col-checkbox">
+                  <Checkbox
+                    checked={selectedIds.has(item.Id)}
+                    onChange={() => toggleRow(item.Id)}
+                    aria-label={`Select ${item.Name}`}
+                  />
+                </TableCell>
+                <TableCell className="col-status"><StatusCell item={item} /></TableCell>
+                <TableCell className="col-name"><CampaignNameCell item={item} config={config} /></TableCell>
+                <TableCell className="col-budget"><BudgetCell item={item} config={config} /></TableCell>
+                <TableCell className="col-delivery"><DeliveryCell item={item} config={config} /></TableCell>
+                <TableCell className="col-clicks"><ClicksCell item={item} config={config} /></TableCell>
+                <TableCell className="col-conv"><ConversionsCell item={item} config={config} /></TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      );
+    };
+
+    // ── ControlsPanel ──────────────────────────────────────────────
+
+    const ACTION_ORDER_OPTIONS = [
+      { value: 'hover-first', label: 'Hover first, Resting after' },
+      { value: 'resting-first', label: 'Resting first, Hover after' },
+    ];
+
+    const ALIGNMENT_OPTIONS = [
+      { value: 'left-edge', label: 'Left edge' },
+      { value: 'right-edge', label: 'Right edge' },
+      { value: 'inline', label: 'Inline' },
+    ];
+
+    const ConfigDropdown = ({ label, value, options, onChange }) => (
+      <div className="control-group">
+        <Label weight="semibold">{label}</Label>
+        <Dropdown
+          value={options.find(o => o.value === value)?.label}
+          selectedOptions={[value]}
+          onOptionSelect={(_, data) => onChange(data.optionValue)}
+          style={{ minWidth: '180px' }}
+        >
+          {options.map(o => <Option key={o.value} value={o.value}>{o.label}</Option>)}
+        </Dropdown>
+      </div>
+    );
+
+    const ControlsPanel = ({ config, onChange }) => {
+      return (
+        <div className="controls-panel">
+          <Accordion collapsible defaultOpenItems={['controls']}>
+            <AccordionItem value="controls">
+              <AccordionHeader>Customize Action Slot Behavior</AccordionHeader>
+              <AccordionPanel>
+                <div className="controls-grid">
+                  <div className="controls-section">
+                    <div className="controls-section-header">Left-aligned cells</div>
+                    <ConfigDropdown
+                      label="Hover action alignment"
+                      value={config.leftAlignedHoverAlignment}
+                      options={ALIGNMENT_OPTIONS}
+                      onChange={v => onChange({ ...config, leftAlignedHoverAlignment: v })}
+                    />
+                    <ConfigDropdown
+                      label="Resting action alignment"
+                      value={config.leftAlignedRestingAlignment}
+                      options={ALIGNMENT_OPTIONS}
+                      onChange={v => onChange({ ...config, leftAlignedRestingAlignment: v })}
+                    />
+                    {config.leftAlignedHoverAlignment === config.leftAlignedRestingAlignment && (
+                      <ConfigDropdown
+                        label="Cell action order"
+                        value={config.leftAlignedActionOrder}
+                        options={ACTION_ORDER_OPTIONS}
+                        onChange={v => onChange({ ...config, leftAlignedActionOrder: v })}
+                      />
+                    )}
+                  </div>
+                  <div className="controls-section">
+                    <div className="controls-section-header">Right-aligned cells</div>
+                    <ConfigDropdown
+                      label="Hover action alignment"
+                      value={config.rightAlignedHoverAlignment}
+                      options={ALIGNMENT_OPTIONS}
+                      onChange={v => onChange({ ...config, rightAlignedHoverAlignment: v })}
+                    />
+                    <ConfigDropdown
+                      label="Resting action alignment"
+                      value={config.rightAlignedRestingAlignment}
+                      options={ALIGNMENT_OPTIONS}
+                      onChange={v => onChange({ ...config, rightAlignedRestingAlignment: v })}
+                    />
+                    {config.rightAlignedHoverAlignment === config.rightAlignedRestingAlignment && (
+                      <ConfigDropdown
+                        label="Cell action order"
+                        value={config.rightAlignedActionOrder}
+                        options={ACTION_ORDER_OPTIONS}
+                        onChange={v => onChange({ ...config, rightAlignedActionOrder: v })}
+                      />
+                    )}
+                  </div>
+                </div>
+              </AccordionPanel>
+            </AccordionItem>
+          </Accordion>
+        </div>
+      );
+    };
+
+    // ── App ────────────────────────────────────────────────────────
+
+    const App = () => {
+      const [activePresetId, setActivePresetId] = useState('aesthetics');
+      const [config, setConfig] = useState({ ...PRESETS[0].config, hideRestingActions: false });
+
+      const activePreset = PRESETS.find(p => p.id === activePresetId);
+      const isModified = activePreset && Object.keys(activePreset.config).some(
+        k => config[k] !== activePreset.config[k]
+      );
+
+      const selectPreset = (preset) => {
+        setActivePresetId(preset.id);
+        setConfig(prev => ({ ...preset.config, hideRestingActions: prev.hideRestingActions }));
+      };
+
+      return (
+        <div className="app-root">
+          <div className="app-header">
+            <h2>Action Slot Grid Prototype</h2>
+            <span className="subtitle">
+              Configure how resting and hover actions are positioned within grid cells
+            </span>
+          </div>
+          <div className="preset-bar">
+            <div className="preset-bar-top">
+              <div className="preset-bar-left">
+                <div className="preset-label">Best presets for specified goals</div>
+                <div className="preset-buttons">
+                  {PRESETS.map(p => (
+                    <Button
+                      key={p.id}
+                      size="small"
+                      appearance={activePresetId === p.id ? 'primary' : 'secondary'}
+                      onClick={() => selectPreset(p)}
+                    >
+                      {p.label}{activePresetId === p.id && isModified ? ' (modified)' : ''}
+                    </Button>
+                  ))}
+                  {isModified && (
+                    <Button
+                      size="small"
+                      appearance="subtle"
+                      onClick={() => setConfig(prev => ({ ...activePreset.config, hideRestingActions: prev.hideRestingActions }))}
+                    >
+                      Reset
+                    </Button>
+                  )}
+                </div>
+              </div>
+              <div className="preset-bar-right">
+                <Switch
+                  label="Hide resting actions"
+                  checked={config.hideRestingActions}
+                  onChange={(_, data) => setConfig(prev => ({ ...prev, hideRestingActions: data.checked }))}
+                />
+              </div>
+            </div>
+            <div className="preset-description">
+              {activePreset?.description}
+            </div>
+          </div>
+          <div className="grid-area">
+            <ActionSlotGrid data={mockCampaigns} config={config} />
+          </div>
+          <ControlsPanel config={config} onChange={setConfig} />
+        </div>
+      );
+    };
+
+    // ── Mount ──────────────────────────────────────────────────────
+
+    createRoot(document.getElementById('root')).render(
+      <FluentProvider theme={webLightTheme} style={{ height: '100%' }}>
+        <App />
+      </FluentProvider>
+    );
+  </script>
+</body>
+</html>

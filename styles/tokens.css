@@ -1,0 +1,60 @@
+/* ==========================================================================
+   Design tokens
+   Type/color values are the confirmed spec from Assets/Stylesheet.png
+   (authoritative — supersedes earlier screenshot guesses). Grid values are
+   per Kayla's written instructions. See DECISIONS.md for the 2026-09-04
+   "confirmed spec" entry.
+   ========================================================================== */
+
+:root {
+  /* Grid */
+  --grid-max: 1440px;
+  --grid-margin: 120px;
+  --grid-margin-tablet: 40px;
+  --grid-margin-mobile: 20px;
+  --grid-gutter: 24px;
+  --grid-columns: 12;
+
+  /* Color */
+  --color-bg: #ffffff;
+  --color-ink: #1a1a1a;
+  --color-body: #5c5c5c;
+  --color-muted: #6f6f6f;
+  --color-section-heading: #515151;
+  --color-hairline: #e5e5e5;
+  --color-underline: #d4d4d4;
+  --color-underline-active: #8a8a8a;
+  --color-nav-wordmark: #484848;
+  --color-surface: #f5f5f5;
+  --color-surface-stroke: #e5e5e5;
+
+  --color-btn-bg: #ffffff;
+  --color-btn-bg-hover: #f5f5f5;
+  --color-btn-text: #5c5c5c;
+  --color-btn-border: #e5e5e5;
+
+  /* Type */
+  --font-display: 'Barlow', sans-serif;
+  --font-serif: 'Merriweather', serif;
+
+  --text-hero-name: 24px;
+  --text-nav: 15px;                /* Merriweather Regular, --color-body */
+  --text-nav-wordmark: 14px;
+  --nav-height: 56px;
+
+  /* Case study system, from Assets/Stylesheet.png */
+  --text-case-header: 24px;        /* Barlow Regular, --color-body */
+  --text-meta: 14px;               /* Merriweather Regular, line-height 24, --color-body */
+  --text-section-heading: 20px;    /* Barlow Regular, --color-section-heading */
+  --text-body: 16px;               /* Barlow Regular, line-height 24, --color-body */
+  --text-button: 16px;             /* Barlow Semibold (600), --color-btn-text */
+  --surface-radius: 12px;
+
+  /* Prose measure: 8 of 12 grid columns at the widest desktop content width
+     (1200px usable at --grid-max), full width below 800px — see base.css */
+  --text-measure-max: 792px;
+
+  /* Item subheader (Issues discovered / Key design decisions titles) —
+     Merriweather Bold, distinct from both section headings and body text */
+  --text-item-heading: 16px;
+}
