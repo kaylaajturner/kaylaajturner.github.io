@@ -132,25 +132,34 @@ body {
    Shared by the home page cards and each case study's top-of-page comparison.
    ========================================================================== */
 
+/* Two earlier attempts at keeping the Compare/Pause button legible against
+   the video (a radial-gradient scrim, then a seamless action band merged
+   into the video) both still read as "part of the product UI" rather than
+   as this site's own chrome. Settled on treating the comparison video
+   exactly like every other piece of media on this site: inset inside a
+   .surface card with the standard 24px padding, button in the same
+   bottom-right corner spot .case-media-replay already uses — the video no
+   longer touches the card's edge at all, so there's always a guaranteed
+   strip of the site's own surface gray around it (and under the button)
+   regardless of what the video itself is showing. See DECISIONS.md. */
 .media-compare {
   position: relative;
 }
 
 .media-compare-frame {
-  width: 100%;
-  /* Matches native asset dimensions 1440 × 900 (16:10) for edge-to-edge fill */
-  aspect-ratio: 16 / 10;
-  overflow: hidden;
-  border: 1px solid var(--color-hairline);
-  border-radius: var(--surface-radius);
-  background: var(--color-surface);
+  min-height: 200px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .media-compare-frame video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  width: auto;
+  max-width: 100%;
+  height: auto;
   display: block;
+  margin: 0 auto;
 }
 
 .media-compare .btn-action {

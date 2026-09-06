@@ -60,12 +60,14 @@
   gap: 5px;
 }
 
-/* Matches .case-title on the case study pages (same weight/size/color) so
-   the project name reads as the same kind of heading in both places. */
+/* Same weight/color as .case-title on the case study pages, but one step
+   smaller (20px vs. 24px) — deliberately not equal, since the home page
+   shows several of these at once and shouldn't carry the same visual
+   weight as the single, page-level title each one links out to. */
 .project-title {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: var(--text-case-header);
+  font-size: 20px;
   color: var(--color-ink);
   line-height: normal;
 }
@@ -148,7 +150,7 @@
   }
 
   .project-title {
-    font-size: 20px;
+    font-size: 19px;
   }
 
   .project-text {
