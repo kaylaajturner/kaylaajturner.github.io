@@ -135,6 +135,16 @@
   align-items: start;
 }
 
+/* Grid items default to min-width: auto, meaning a track won't shrink
+   below its content's own min-content size — a long nowrap button (or any
+   unbreakable content) inside either column can silently force the whole
+   row, and with it the page, wider than the viewport on narrow screens.
+   min-width: 0 lets both columns actually shrink to the track size the
+   grid assigns them instead. */
+.ai-decision-row > * {
+  min-width: 0;
+}
+
 .ai-decision-card {
   padding: 24px;
 }
@@ -675,6 +685,8 @@ body.iteration-modal-open {
   .case-section-actions .btn-action {
     width: 100%;
     justify-content: center;
+    white-space: normal;
+    text-align: center;
   }
 
   .item-heading-row .item-heading {

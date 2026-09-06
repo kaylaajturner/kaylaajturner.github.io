@@ -143,7 +143,7 @@ While tightening up the final scope bar concept, I also tested user’s reaction
 Table Page Modernization
 Microsoft Advertising ‧ Pilot ongoing  
 Microsoft Monetize ‧  Q2 2025  
-Solo / Lead designer for Table Page, other designer for Navigation refinements
+Lead / Solo designer for Table Page, other designer for Navigation refinements
 ---
 
 
@@ -228,7 +228,7 @@ Quick actions available via table header cell buttons
 
 ##### AI as a Decision-Support Tool  
 
-Evaluating complex table behaviors through static mocks alone creates blind spots in design-to-code fidelity. Many decisions are multifaceted, and reviewing all the combinations can make stakeholders’ eyes glaze over. To fix this, I used AI-assisted interactive prototyping to model complex decisions, such as truncation thresholds and cell resting/hover actions. Rather than coding fully functional table components (which is difficult even for skilled software engineers), I scoped these lightweight, mid-fi prototypes to target specific aspects to visually show trade-offs. Serving as interactive decision-support tools, they enabled stakeholders to evaluate proposed patterns in real time, provide actionable feedback, and increase speed toward a final decision.
+Evaluating complex table behaviors through static mocks alone creates blind spots in design-to-code fidelity. Many decisions are multifaceted, and reviewing all the combinations can make stakeholders’ eyes glaze over. To fix this, I used AI-assisted interactive prototyping to model complex decisions, such as truncation thresholds and cell resting/hover actions. Rather than coding fully functional table components, I scoped these lightweight, mid-fi prototypes to target specific aspects to visually show trade-offs. Serving as interactive decision-support tools, they enabled stakeholders to evaluate proposed patterns in real time, provide actionable feedback, and increase speed toward a final decision.
 
 
 
@@ -236,7 +236,7 @@ Evaluating complex table behaviors through static mocks alone creates blind spot
 
 Configure how resting and hover actions are positioned within grid cells  
 \[Table - Main 11 - Action Slot Grid]  
-\[View cell actions alignment decisioning prototype button]
+\[View cell actions decisioning prototype button]
 
 
 

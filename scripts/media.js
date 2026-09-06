@@ -24,7 +24,7 @@ function paintFirstFrame(video) {
     paintFirstFrame(video);
 
     function setPlaying(isPlaying) {
-      btn.textContent = isPlaying ? 'PAUSE' : 'COMPARE';
+      btn.textContent = isPlaying ? 'Pause' : 'Compare to previous design';
       btn.setAttribute('aria-label', isPlaying ? 'Pause comparison' : 'Compare designs');
     }
 
